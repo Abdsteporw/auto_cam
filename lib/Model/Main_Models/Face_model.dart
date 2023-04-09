@@ -3,11 +3,12 @@ import 'package:auto_cam/Model/Main_Models/Join_model.dart';
 
 class Face_model{
 
+  late String face_name;
   late List<Join_model> join_list;
   late List<Groove_model> groove_list;
   late List<int> face_item;
 
-  Face_model(this.face_item,this.join_list,this.groove_list);
+  Face_model(this.face_name,this.face_item,this.join_list,this.groove_list);
 
 
 }
