@@ -1,3 +1,5 @@
+import 'package:auto_cam/Controller/Draw_Controllers/Draw_Controller.dart';
+import 'package:auto_cam/Model/Main_Models/Box_model.dart';
 import 'package:auto_cam/View/Main_Screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -6,6 +8,13 @@ import 'package:get/get.dart';
 
 class Setting_Box_Size_Form extends StatelessWidget {
   GlobalKey<FormState> form_key = GlobalKey();
+  Draw_Controller draw_Controller = Get.find();
+
+  TextEditingController width_controller               =TextEditingController();
+  TextEditingController hight_controller               =TextEditingController();
+  TextEditingController depth_controller               =TextEditingController();
+  TextEditingController material_thickness_controller  =TextEditingController();
+  TextEditingController back_panel_thickness_controller=TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -76,7 +85,7 @@ class Setting_Box_Size_Form extends StatelessWidget {
                 width: 100,
                 height: 26,
                 child: TextFormField(
-                  // controller: box_width_controller,
+                  controller: width_controller,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
@@ -119,7 +128,7 @@ class Setting_Box_Size_Form extends StatelessWidget {
                 width: 100,
                 height: 26,
                 child: TextFormField(
-                  // controller: box_height_controller,
+                  controller: hight_controller,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
@@ -162,7 +171,7 @@ class Setting_Box_Size_Form extends StatelessWidget {
                   width: 100,
                   height: 26,
                   child: TextFormField(
-                    // controller: box_depth_controller,
+                    controller: depth_controller,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(8),
@@ -227,7 +236,7 @@ class Setting_Box_Size_Form extends StatelessWidget {
                 width: 100,
                 height: 26,
                 child: TextFormField(
-                  // controller: box_thickness_controller,
+                  controller: material_thickness_controller,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
@@ -275,7 +284,7 @@ class Setting_Box_Size_Form extends StatelessWidget {
                 width: 100,
                 height: 26,
                 child: TextFormField(
-                  // controller: box_thickness_controller,
+                  controller: back_panel_thickness_controller,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
@@ -357,7 +366,17 @@ class Setting_Box_Size_Form extends StatelessWidget {
                 left: 18.0, right: 52, top: 24, bottom: 24),
             child: InkWell(
               onTap: () {
-                valid_and_go(form_key.currentState!.validate());
+                if(form_key.currentState!.validate()){
+
+                 double  width_value=double.parse(width_controller.text.toString());
+                 double  hight_value=double.parse(hight_controller.text.toString());
+                 double  depth_value=double.parse(depth_controller.text.toString());
+                 double  material_thickness_value=double.parse(material_thickness_controller  .text.toString());
+                 double  pack_panel_thickness_value=double.parse(back_panel_thickness_controller.text.toString());
+
+                  draw_Controller.draw_Box(Box_model(width_value, hight_value, depth_value,
+                      material_thickness_value, pack_panel_thickness_value));
+                }
               },
               child: Container(
                 width: 350,
@@ -509,13 +528,4 @@ class Setting_Box_Size_Form extends StatelessWidget {
       ),
     );
   }
-
-  // vlidation  method
-  void valid_and_go(bool v) {
-     print('$v');
-
-
-  }
-
-
 }
