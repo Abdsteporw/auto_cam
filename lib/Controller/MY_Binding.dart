@@ -5,7 +5,7 @@ import 'package:auto_cam/Controller/File_managing_Coltrollers/PDF_Controller.dar
 import 'package:auto_cam/Controller/Manufacturing_Controllers/Lamello_Controllers.dart';
 import 'package:auto_cam/Controller/Manufacturing_Controllers/Manufacturing_Controller.dart';
 import 'package:auto_cam/Controller/Manufacturing_Controllers/Material_Controller.dart';
-import 'package:auto_cam/Controller/Repositories_Controllers/MY_Repository.dart';
+import 'package:auto_cam/Controller/Repositories_Controllers/Box_Repository.dart';
 import 'package:get/get.dart';
 
 class MY_Binding extends Bindings{
@@ -13,7 +13,7 @@ class MY_Binding extends Bindings{
   @override
   void dependencies() {
 
-   Get.lazyPut(()=> MY_Repository());
+   Get.lazyPut(()=> Box_Repository());
    Get.lazyPut(()=> Material_Controller());
    Get.lazyPut(()=> Manufacturing_Controller());
    Get.lazyPut(()=> Lamello_Controller());

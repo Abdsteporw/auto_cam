@@ -1,3 +1,4 @@
+import 'package:auto_cam/Model/Main_Models/Coordinate_3D.dart';
 import 'package:auto_cam/Model/Main_Models/Face_model.dart';
 import 'package:auto_cam/Model/Main_Models/Piece_model.dart';
 import 'package:auto_cam/Model/Main_Models/Point_model.dart';
@@ -15,7 +16,7 @@ class Box_model {
   Box_model(this.box_width, this.box_height, this.box_depth,
       this.material_thickness, this.backpanel_thickness) {
     box_id = 1;
-    box_origin = Point_model(box_width, box_height, 0);
+    box_origin = Point_model(200, 200, 0);
 
     ////////////////////////////////////////////////////////////////////////////
 
@@ -82,7 +83,7 @@ class Box_model {
         material_thickness,
         Point_model(
             box_origin.x_coordinate + pieces_thickness['left_thickness']!,
-            box_origin.y_coordinate - box_height,
+            box_origin.y_coordinate + box_height-pieces_thickness['top_thickness']!,
             0),
         top_piece_piece_faces);
 
@@ -125,7 +126,7 @@ class Box_model {
             box_origin.x_coordinate +
                 box_width -
                 pieces_thickness['right_thickness']!,
-            box_origin.y_coordinate - box_height,
+            box_origin.y_coordinate,
             0),
         right_piece_piece_faces);
 
@@ -165,7 +166,7 @@ class Box_model {
         box_height,
         material_thickness,
         Point_model(
-            box_origin.x_coordinate, box_origin.y_coordinate - box_height, 0),
+            box_origin.x_coordinate, box_origin.y_coordinate, 0),
         left_piece_piece_faces);
 
     ////////////////////////////////////////////////////////////////////////////
@@ -204,8 +205,8 @@ class Box_model {
         box_width - 2 * material_thickness,
         material_thickness,
         Point_model(
-            box_origin.x_coordinate + pieces_thickness['base_thickness']!,
-            box_origin.y_coordinate - box_height,
+            box_origin.x_coordinate + pieces_thickness['left_thickness']!,
+            box_origin.y_coordinate ,
             0),
         base_piece_piece_faces);
 
@@ -243,11 +244,11 @@ class Box_model {
         'back_panel',
         'F',
         'back_panel_id_material',
-        box_width - 20,
-        box_height - 20,
+        box_width - 18,
+        box_height -18,
         backpanel_thickness,
         Point_model(
-            box_origin.x_coordinate + 10, box_origin.y_coordinate - 10, 0),
+            box_origin.x_coordinate + 9, box_origin.y_coordinate + 9, 0),
         back_panel_piece_piece_faces);
 
     ////////////////////////////////////////////////////////////////////////////
@@ -259,6 +260,7 @@ class Box_model {
     box_pieces.add(left_piece);
     box_pieces.add(back_panel_piece);
   }
+
 
   Add_shelf() {}
 

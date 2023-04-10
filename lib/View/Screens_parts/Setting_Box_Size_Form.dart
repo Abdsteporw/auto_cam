@@ -1,4 +1,6 @@
 import 'package:auto_cam/Controller/Draw_Controllers/Draw_Controller.dart';
+import 'package:auto_cam/Controller/MY_Binding.dart';
+import 'package:auto_cam/Controller/Repositories_Controllers/Box_Repository.dart';
 import 'package:auto_cam/Model/Main_Models/Box_model.dart';
 import 'package:auto_cam/View/Main_Screen.dart';
 import 'package:flutter/cupertino.dart';
@@ -8,7 +10,10 @@ import 'package:get/get.dart';
 
 class Setting_Box_Size_Form extends StatelessWidget {
   GlobalKey<FormState> form_key = GlobalKey();
+
   Draw_Controller draw_Controller = Get.find();
+  Box_Repository box_repository=Get.find();
+
 
   TextEditingController width_controller               =TextEditingController();
   TextEditingController hight_controller               =TextEditingController();
@@ -374,7 +379,8 @@ class Setting_Box_Size_Form extends StatelessWidget {
                  double  material_thickness_value=double.parse(material_thickness_controller  .text.toString());
                  double  pack_panel_thickness_value=double.parse(back_panel_thickness_controller.text.toString());
 
-                  draw_Controller.draw_Box(Box_model(width_value, hight_value, depth_value,
+
+                 box_repository.add_Box(Box_model(width_value, hight_value, depth_value,
                       material_thickness_value, pack_panel_thickness_value));
                 }
               },

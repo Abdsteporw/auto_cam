@@ -1,3 +1,0 @@
-class MY_Repository{
-
-}

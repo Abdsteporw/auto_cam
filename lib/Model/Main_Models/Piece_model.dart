@@ -41,37 +41,36 @@ class Piece_model{
     late Point_model pz_4;
 
     if(piece_direction=='V'){
-      p0_1=Point_model(0, 0, 0);
-      p0_2=Point_model(0, Piece_height, 0);
-      p0_3=Point_model(Piece_thickness, Piece_height, 0);
-      p0_4=Point_model(Piece_thickness, 0, 0);
-
-      pz_1=Point_model(0, 0, Piece_width);
-      pz_2=Point_model(0, Piece_height, Piece_width);
-      pz_3=Point_model(Piece_thickness, Piece_height, Piece_width);
-      pz_4=Point_model(Piece_thickness, 0, Piece_width);
+      p0_1=Point_model(0              +piece_origin.x_coordinate,piece_origin.y_coordinate+ 0, 0);
+      p0_2=Point_model(0              +piece_origin.x_coordinate,piece_origin.y_coordinate+ Piece_height, 0);
+      p0_3=Point_model(Piece_thickness+piece_origin.x_coordinate,piece_origin.y_coordinate+ Piece_height, 0);
+      p0_4=Point_model(Piece_thickness+piece_origin.x_coordinate,piece_origin.y_coordinate+ 0, 0);
+      pz_1=Point_model(0              +piece_origin.x_coordinate,piece_origin.y_coordinate+ 0, Piece_width);
+      pz_2=Point_model(0              +piece_origin.x_coordinate,piece_origin.y_coordinate+ Piece_height, Piece_width);
+      pz_3=Point_model(Piece_thickness+piece_origin.x_coordinate,piece_origin.y_coordinate+ Piece_height, Piece_width);
+      pz_4=Point_model(Piece_thickness+piece_origin.x_coordinate,piece_origin.y_coordinate+ 0, Piece_width);
     }
     else if(piece_direction=='H'){
-      p0_1=Point_model(0, 0, 0);
-      p0_2=Point_model(0, Piece_thickness, 0);
-      p0_3=Point_model(Piece_height, Piece_thickness, 0);
-      p0_4=Point_model(Piece_height, 0, 0);
+      p0_1=Point_model(0           +piece_origin.x_coordinate,piece_origin.y_coordinate+ 0, 0);
+      p0_2=Point_model(0           +piece_origin.x_coordinate,piece_origin.y_coordinate+ Piece_thickness, 0);
+      p0_3=Point_model(Piece_height+piece_origin.x_coordinate,piece_origin.y_coordinate+ Piece_thickness, 0);
+      p0_4=Point_model(Piece_height+piece_origin.x_coordinate,piece_origin.y_coordinate+ 0, 0);
 
-      pz_1=Point_model(0, 0, Piece_width);
-      pz_2=Point_model(0, Piece_thickness, Piece_width);
-      pz_3=Point_model(Piece_height, Piece_thickness, Piece_width);
-      pz_4=Point_model(Piece_height, 0, Piece_width);
+      pz_1=Point_model(0           +piece_origin.x_coordinate,piece_origin.y_coordinate+ 0, Piece_width);
+      pz_2=Point_model(0           +piece_origin.x_coordinate,piece_origin.y_coordinate+ Piece_thickness, Piece_width);
+      pz_3=Point_model(Piece_height+piece_origin.x_coordinate,piece_origin.y_coordinate+ Piece_thickness, Piece_width);
+      pz_4=Point_model(Piece_height+piece_origin.x_coordinate,piece_origin.y_coordinate+ 0, Piece_width);
     }
     else if(piece_direction=='F'){
-      p0_1=Point_model(0, 0, 0);
-      p0_2=Point_model(0, Piece_width, 0);
-      p0_3=Point_model(Piece_height, Piece_width, 0);
-      p0_4=Point_model(0, Piece_width, 0);
+      p0_1=Point_model(0           +piece_origin.x_coordinate,piece_origin.y_coordinate+ 0, 0);
+      p0_2=Point_model(0           +piece_origin.x_coordinate,piece_origin.y_coordinate+ Piece_height, 0);
+      p0_3=Point_model(Piece_width +piece_origin.x_coordinate,piece_origin.y_coordinate+ Piece_height, 0);
+      p0_4=Point_model(Piece_width +piece_origin.x_coordinate,piece_origin.y_coordinate+ 0, 0);
 
-      pz_1=Point_model(0, 0, Piece_thickness);
-      pz_2=Point_model(0, Piece_width, Piece_thickness);
-      pz_3=Point_model(Piece_height, Piece_width, Piece_thickness);
-      pz_4=Point_model(0, Piece_width, Piece_thickness);
+      pz_1=Point_model(0           +piece_origin.x_coordinate,piece_origin.y_coordinate+ 0, Piece_thickness);
+      pz_2=Point_model(0           +piece_origin.x_coordinate,piece_origin.y_coordinate+ Piece_height , Piece_thickness);
+      pz_3=Point_model(Piece_width +piece_origin.x_coordinate,piece_origin.y_coordinate+ Piece_height , Piece_thickness);
+      pz_4=Point_model(Piece_width +piece_origin.x_coordinate,piece_origin.y_coordinate+ 0, Piece_thickness);
     }
 
     List<Point_model> xy_0_plane=[p0_1,p0_2,p0_3,p0_4];

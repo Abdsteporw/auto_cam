@@ -1,27 +1,24 @@
+
+import 'dart:ui';
+
 import 'package:auto_cam/Controller/Painters/Box_Painter.dart';
-import 'package:auto_cam/Model/Main_Models/Box_model.dart';
 import 'package:get/get.dart';
 
 class Draw_Controller extends GetxController {
 
-  // main draw method that call Box_Painter witch is the custom painter for box view screen
-  // this method shod get box model as parameter and pass that box_model to box_painter to draw it
-  Box_Painter draw_Box(Box_model box_model) {
 
-    Box_Painter boxPainter = Box_Painter();
+  /// scale value that can changes from box editor screen and it will rebuild the box (recall box_Painter with new parameter)
+  double drawing_scale=1;
 
-    print(box_model.box_pieces.length);
+  /// screen size , its changed from the box edit screen ,and this value here observable from build widget of Box Painter
+  Rx<Size> screen_size =Size(800, 600).obs;
 
-    box_model.box_pieces.forEach((element) {
-      print('piece name :${element.piece_name}');
-      element.piece_faces.forEach((element) {
-        print('face name :${element.face_name}');
-        element.face_item.forEach((element) {
-          print(" item :$element");
-        });
-      });
-      print('#############');
-    });
+
+  /// main draw method that call Box_Painter witch is the custom painter for box view screen
+  /// this method shod get box model as parameter and pass that box_model to box_painter to draw it
+  Box_Painter draw_Box() {
+
+    Box_Painter boxPainter = Box_Painter(drawing_scale,screen_size.value);
 
     return boxPainter;
   }
