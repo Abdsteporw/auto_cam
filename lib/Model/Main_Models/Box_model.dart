@@ -16,7 +16,7 @@ class Box_model {
   Box_model(this.box_width, this.box_height, this.box_depth,
       this.material_thickness, this.backpanel_thickness) {
     box_id = 1;
-    box_origin = Point_model(200, 200, 0);
+    box_origin = Point_model(0,0, 0);
 
     ////////////////////////////////////////////////////////////////////////////
 

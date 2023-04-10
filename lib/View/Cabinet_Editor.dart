@@ -19,7 +19,7 @@ class Cabinet_Editor extends StatelessWidget {
 
           // main Box Painter
           Container(width: screen_size.width-300,
-          child:Drawing_Screen(),
+          child:Drawing_Screen(screen_size.width-300),
           ),
 
         ],
