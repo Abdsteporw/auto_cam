@@ -19,6 +19,7 @@ class Setting_Box_Size_Form extends StatelessWidget {
   TextEditingController back_panel_thickness_controller=TextEditingController();
 
   box_details(){
+
     Box_model b = draw_Controller.get_default_box();
     width_controller.text=b.box_width.toString();
     hight_controller.text=b.box_height.toString();
