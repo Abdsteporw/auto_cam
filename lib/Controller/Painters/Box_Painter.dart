@@ -13,7 +13,7 @@ class Box_Painter extends CustomPainter {
   late Size screen_Size;
 
   Box_Painter(double scale, Size screen_size) {
-    box_model = box_repository.box_model;
+    box_model = box_repository.box_model.value;
     this.drawing_scale = scale;
     this.screen_Size = screen_size;
 
@@ -27,15 +27,7 @@ class Box_Painter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     draw_box(canvas);
 
-    /// test
-    canvas.drawCircle(
-        Offset(screen_Size.width / 2, screen_Size.height / 2),
-        drawing_scale,
-        Paint()
-          ..strokeWidth = 1
-          ..style = PaintingStyle.stroke);
 
-    ///
   }
 
   @override
