@@ -1,4 +1,4 @@
-import 'package:auto_cam/Model/Main_Models/Coordinate_3D.dart';
+
 import 'package:auto_cam/Model/Main_Models/Face_model.dart';
 import 'package:auto_cam/Model/Main_Models/Piece_model.dart';
 import 'package:auto_cam/Model/Main_Models/Point_model.dart';
@@ -15,8 +15,8 @@ class Box_model {
 
   Box_model(this.box_width, this.box_height, this.box_depth,
       this.material_thickness, this.backpanel_thickness) {
-    box_id = 1;
-    box_origin = Point_model(0,0, 0);
+    box_id = 2;
+    box_origin = Point_model(0,0,0);
 
     ////////////////////////////////////////////////////////////////////////////
 
@@ -259,6 +259,11 @@ class Box_model {
     box_pieces.add(base_piece);
     box_pieces.add(left_piece);
     box_pieces.add(back_panel_piece);
+
+    // print_pieces_coordinate();
+
+
+
   }
 
 
@@ -270,4 +275,21 @@ class Box_model {
 
   Add_Door() {}
 
+
+  print_pieces_coordinate(){
+    for(int i=0;i<box_pieces.length;i++){
+
+      print(' piece name :${box_pieces[i].piece_id}');
+      print(' piece id  :${box_pieces[i].piece_name}');
+
+        // print('p L D : X${box_pieces[i].cordinate_3d.xy_0_plane[0].x_coordinate} , Y:${box_pieces[i].cordinate_3d.xy_0_plane[0].y_coordinate}');
+        // print('p L U : X${box_pieces[i].cordinate_3d.xy_0_plane[1].x_coordinate} , Y:${box_pieces[i].cordinate_3d.xy_0_plane[1].y_coordinate}');
+        // print('p R U : X${box_pieces[i].cordinate_3d.xy_0_plane[0].x_coordinate} '
+        //     ', Y:${box_pieces[i].cordinate_3d.xy_0_plane[0].y_coordinate}');
+        // print('p R D : X${box_pieces[i].cordinate_3d.xy_0_plane[3].x_coordinate} , Y:${box_pieces[i].cordinate_3d.xy_0_plane[3].y_coordinate}');
+
+        // print('=============');
+
+    }
+  }
 }

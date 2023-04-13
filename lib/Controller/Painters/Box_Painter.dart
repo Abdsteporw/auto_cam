@@ -1,26 +1,28 @@
-import 'package:auto_cam/Controller/Repositories_Controllers/Box_Repository.dart';
 import 'package:auto_cam/Model/Main_Models/Box_model.dart';
 import 'package:auto_cam/Model/Main_Models/Piece_model.dart';
 import 'package:auto_cam/Model/Main_Models/Point_model.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 class Box_Painter extends CustomPainter {
-  Box_Repository box_repository = Get.find();
 
-  late Box_model box_model;
   late double drawing_scale;
   late Size screen_Size;
+  late int hover_id;
+  late Box_model box_model;
 
-  Box_Painter(double scale, Size screen_size) {
-    box_model = box_repository.box_model.value;
+
+  Box_Painter( Box_model box_model ,double scale, Size screen_size,int hover_id,Offset m) {
+    this.box_model=box_model;
     this.drawing_scale = scale;
     this.screen_Size = screen_size;
+    this.hover_id=hover_id;
+
 
     box_model.box_origin.x_coordinate =
         screen_size.width / 2 - box_model.box_width * drawing_scale / 2;
     box_model.box_origin.y_coordinate =
-        screen_size.height / 2 - box_model.box_height * drawing_scale / 2;
+        screen_size.height / 2 + box_model.box_height * drawing_scale / 2;
+
   }
 
   @override
@@ -36,10 +38,16 @@ class Box_Painter extends CustomPainter {
   }
 
   draw_box(Canvas canvas) {
+
     Paint paint = Paint()
       ..strokeWidth = 1
       ..style = PaintingStyle.stroke
       ..color = Colors.black;
+
+
+    Paint paint_color = Paint()
+      ..style = PaintingStyle.fill
+      ..color = Colors.blue[100]!;
 
     for (int i = 0; i < box_model.box_pieces.length; i++) {
       Piece_model piece_model = box_model.box_pieces[i];
@@ -50,13 +58,22 @@ class Box_Painter extends CustomPainter {
       Point_model p4 = piece_model.cordinate_3d.xy_0_plane[3];
 
       Path path = Path();
-      path.moveTo(p1.x_coordinate * drawing_scale+box_model.box_origin.x_coordinate, p1.y_coordinate * drawing_scale+box_model.box_origin.y_coordinate);
-      path.lineTo(p2.x_coordinate * drawing_scale+box_model.box_origin.x_coordinate, p2.y_coordinate * drawing_scale+box_model.box_origin.y_coordinate);
-      path.lineTo(p3.x_coordinate * drawing_scale+box_model.box_origin.x_coordinate, p3.y_coordinate * drawing_scale+box_model.box_origin.y_coordinate);
-      path.lineTo(p4.x_coordinate * drawing_scale+box_model.box_origin.x_coordinate, p4.y_coordinate * drawing_scale+box_model.box_origin.y_coordinate);
-      path.lineTo(p1.x_coordinate * drawing_scale+box_model.box_origin.x_coordinate, p1.y_coordinate * drawing_scale+box_model.box_origin.y_coordinate);
+      path.moveTo(p1.x_coordinate * drawing_scale+box_model.box_origin.x_coordinate,box_model.box_origin.y_coordinate- p1.y_coordinate * drawing_scale);
+      path.lineTo(p2.x_coordinate * drawing_scale+box_model.box_origin.x_coordinate,box_model.box_origin.y_coordinate- p2.y_coordinate * drawing_scale);
+      path.lineTo(p3.x_coordinate * drawing_scale+box_model.box_origin.x_coordinate,box_model.box_origin.y_coordinate- p3.y_coordinate * drawing_scale);
+      path.lineTo(p4.x_coordinate * drawing_scale+box_model.box_origin.x_coordinate,box_model.box_origin.y_coordinate- p4.y_coordinate * drawing_scale);
+      path.lineTo(p1.x_coordinate * drawing_scale+box_model.box_origin.x_coordinate,box_model.box_origin.y_coordinate- p1.y_coordinate * drawing_scale);
 
-      canvas.drawPath(path, paint);
+
+      if(piece_model.piece_id==hover_id){
+
+        canvas.drawPath(path, paint_color);
+        canvas.drawPath(path, paint);
+
+      }else{
+        canvas.drawPath(path, paint);
+
+      }
     }
   }
 }

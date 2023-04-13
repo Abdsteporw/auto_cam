@@ -373,7 +373,7 @@ class Setting_Box_Size_Form extends StatelessWidget {
 
           ///////////////////////
           ///////////////////////
-          //Draw in the Screen button
+          ///Draw in the Screen button
           Padding(
             padding: const EdgeInsets.only(
                 left: 18.0, right: 52, top: 24, bottom: 24),

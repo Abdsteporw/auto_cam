@@ -45,6 +45,7 @@ class Piece_model{
       p0_2=Point_model(0              +piece_origin.x_coordinate,piece_origin.y_coordinate+ Piece_height, 0);
       p0_3=Point_model(Piece_thickness+piece_origin.x_coordinate,piece_origin.y_coordinate+ Piece_height, 0);
       p0_4=Point_model(Piece_thickness+piece_origin.x_coordinate,piece_origin.y_coordinate+ 0, 0);
+
       pz_1=Point_model(0              +piece_origin.x_coordinate,piece_origin.y_coordinate+ 0, Piece_width);
       pz_2=Point_model(0              +piece_origin.x_coordinate,piece_origin.y_coordinate+ Piece_height, Piece_width);
       pz_3=Point_model(Piece_thickness+piece_origin.x_coordinate,piece_origin.y_coordinate+ Piece_height, Piece_width);
