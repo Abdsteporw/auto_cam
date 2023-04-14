@@ -29,7 +29,6 @@ class Draw_Controller extends GetxController {
 
   Draw_Controller() {
     box_model = box_repository.box_model.value;
-
   }
 
   /// main draw method that call Box_Painter witch is the custom painter for box view screen
@@ -61,46 +60,45 @@ class Draw_Controller extends GetxController {
 
   /// the first one :
   hover_id_find(Box_model box_model) {
-
     List<Piece_model> box_pieces = box_model.box_pieces;
 
-    hover_id=100;
+    hover_id = 100;
     for (int i = 0; i < box_pieces.length; i++) {
       Piece_model p = box_pieces[i];
-      if(p.piece_name=='back_panel'){
+      if (p.piece_name == 'back_panel') {
         continue;
-      }
-
-     else if (check_position(p)) {
+      } else if (check_position(p)) {
         hover_id = p.piece_id;
       }
     }
-
   }
 
   ///the second one :
   bool check_position(Piece_model p) {
     bool is_hover = false;
 
-
     Cordinate_3D cordinate_3d = p.cordinate_3d;
 
     List<Point_model> piece_points = cordinate_3d.xy_0_plane;
 
-    double left_down_point_x =(box_model.box_origin.x_coordinate+ piece_points[0].x_coordinate*drawing_scale.value);
-    double left_down_point_y =(box_model.box_origin.y_coordinate- piece_points[0].y_coordinate*drawing_scale.value);
+    double left_down_point_x = (box_model.box_origin.x_coordinate +
+        piece_points[0].x_coordinate * drawing_scale.value);
+    double left_down_point_y = (box_model.box_origin.y_coordinate -
+        piece_points[0].y_coordinate * drawing_scale.value);
 
-    double right_up_point_x  =(box_model.box_origin.x_coordinate+ piece_points[2].x_coordinate*drawing_scale.value);
-    double right_up_point_y  =(box_model.box_origin.y_coordinate- piece_points[2].y_coordinate*drawing_scale.value);
+    double right_up_point_x = (box_model.box_origin.x_coordinate +
+        piece_points[2].x_coordinate * drawing_scale.value);
+    double right_up_point_y = (box_model.box_origin.y_coordinate -
+        piece_points[2].y_coordinate * drawing_scale.value);
 
     double mouse_position_x = mouse_position.value.dx;
     double mouse_position_y = mouse_position.value.dy;
 
+    bool x_compare = left_down_point_x < mouse_position_x &&
+        mouse_position_x < right_up_point_x;
 
-
-    bool x_compare = left_down_point_x<mouse_position_x && mouse_position_x<right_up_point_x;
-
-    bool y_compare = left_down_point_y>mouse_position_y && mouse_position_y>right_up_point_y;
+    bool y_compare = left_down_point_y > mouse_position_y &&
+        mouse_position_y > right_up_point_y;
 
     if (x_compare && y_compare) {
       is_hover = true;
@@ -109,12 +107,46 @@ class Draw_Controller extends GetxController {
   }
 
 
-  String context_menu_title='aa';
 
-  Widget Context_Menu(){
-    return Main_Edit_Dialog();
+  String minu_title() {
+    String dialogs_titles='';
+
+
+    if (!(hover_id == 100)) {
+      if (box_model.box_pieces[hover_id].piece_name == 'inner') {
+        dialogs_titles='Edit Box';
+      } else {
+        dialogs_titles='Edit Piece';
+
+      }
+    } else {
+      dialogs_titles='properties';
+
+    }
+    return dialogs_titles;
   }
 
+  Widget Context_Menu() {
+    late Widget my_widget;
 
+    if (!(hover_id == 100)) {
+      if (box_model.box_pieces[hover_id].piece_name == 'inner') {
+
+        my_widget = Main_Edit_Dialog();
+      } else {
+
+        my_widget = Container(
+
+          child: Text('pieces menu'),
+        );
+      }
+    } else {
+      my_widget = Container(
+        child: Text('general menu'),
+      );
+    }
+
+    return my_widget;
+  }
 
 }

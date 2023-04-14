@@ -290,11 +290,13 @@ class Box_model {
     ////////////////////////////////////////////////////////////////////////////
 
     box_pieces = [];
+    box_pieces.add(back_panel_piece);
+    box_pieces.add(back_panel_piece);
+    box_pieces.add(back_panel_piece);
     box_pieces.add(top_piece);
     box_pieces.add(right_piece);
     box_pieces.add(base_piece);
     box_pieces.add(left_piece);
-    box_pieces.add(back_panel_piece);
     box_pieces.add(inner_piece);
 
     print_pieces_coordinate();

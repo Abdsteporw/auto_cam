@@ -20,7 +20,8 @@ class Drawing_Screen extends StatelessWidget {
         },
         onLongPress: () {
           Get.defaultDialog(
-              title: "Edit Menu",
+            radius: 12,
+              title: draw_controller.minu_title(),
               content: draw_controller.Context_Menu()
           );
         },
