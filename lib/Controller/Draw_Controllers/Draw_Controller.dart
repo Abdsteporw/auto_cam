@@ -6,6 +6,8 @@ import 'package:auto_cam/Model/Main_Models/Box_model.dart';
 import 'package:auto_cam/Model/Main_Models/Coordinate_3D.dart';
 import 'package:auto_cam/Model/Main_Models/Piece_model.dart';
 import 'package:auto_cam/Model/Main_Models/Point_model.dart';
+import 'package:auto_cam/View/Dialog_Boxes/Context_Menu_Dialogs/Main_Edit_Dialog.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class Draw_Controller extends GetxController {
@@ -105,4 +107,14 @@ class Draw_Controller extends GetxController {
     }
     return is_hover;
   }
+
+
+  String context_menu_title='aa';
+
+  Widget Context_Menu(){
+    return Main_Edit_Dialog();
+  }
+
+
+
 }

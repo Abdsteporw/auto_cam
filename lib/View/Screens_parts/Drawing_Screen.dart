@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class Drawing_Screen extends StatelessWidget {
-
   Draw_Controller draw_controller = Get.find();
   late double w;
   late double h;
@@ -19,7 +18,12 @@ class Drawing_Screen extends StatelessWidget {
         onScaleUpdate: (d) {
           draw_controller.drawing_scale.value = d.scale;
         },
-        onLongPress: () {},
+        onLongPress: () {
+          Get.defaultDialog(
+              title: "Edit Menu",
+              content: draw_controller.Context_Menu()
+          );
+        },
         child: MouseRegion(
           onHover: (d) {
             draw_controller.mouse_position.value = d.localPosition;
