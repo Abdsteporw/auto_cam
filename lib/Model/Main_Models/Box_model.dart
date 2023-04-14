@@ -4,6 +4,7 @@ import 'package:auto_cam/Model/Main_Models/Piece_model.dart';
 import 'package:auto_cam/Model/Main_Models/Point_model.dart';
 
 class Box_model {
+
   late int box_id;
   late double box_width;
   late double box_height;
@@ -12,6 +13,7 @@ class Box_model {
   late double backpanel_thickness;
   late Point_model box_origin;
   late List<Piece_model> box_pieces;
+
 
   Box_model(this.box_width, this.box_height, this.box_depth,
       this.material_thickness, this.backpanel_thickness) {
@@ -26,6 +28,7 @@ class Box_model {
     /// we will  define the thickness of all pieces to use it while we initiate the other pieces
     /// and as more explanation we need to separate this value because maybe one of box side or pieces
     /// has different thickness or even different material
+
     Map<String, double> pieces_thickness = {
       "top_thickness": material_thickness,
       "base_thickness": material_thickness,
@@ -36,6 +39,7 @@ class Box_model {
     /// we need to define the id of initiate pieces
     /// note : we consider the main inner or inner area has the id of back panel
     /// and it will always like this , the different id for inner will be for new inners
+
     Map<String, int> pices_id = {
       "out_off_the_box": 0,
       "the_box_front": 1,
@@ -44,6 +48,7 @@ class Box_model {
       "right_id": 4,
       "base_id": 5,
       "left_id": 6,
+      "inner_id": 7,
     };
 
     ////////////////////////////////////////////////////////////////////////////
@@ -253,16 +258,46 @@ class Box_model {
 
     ////////////////////////////////////////////////////////////////////////////
 
+    /// 6- initiate the (main inner) piece of the box
+    /// 6-1 initiate the Faces of the inner piece
+    ///
+    Face_model inner_piece_right_face  = Face_model('right_face', [pices_id['right_id']!], [], []);
+    Face_model inner_piece_left_face   = Face_model('left_face', [pices_id['left_id']!], [], []);
+    Face_model inner_piece_top_face    = Face_model('top_face', [pices_id['top_id']!], [], []);
+    Face_model inner_piece_base_face   = Face_model('bottom_face', [pices_id['base_id']!], [], []);
+
+    List<Face_model> inner_piece_piece_faces = [
+     inner_piece_right_face,
+     inner_piece_left_face ,
+     inner_piece_top_face  ,
+     inner_piece_base_face ,
+    ];
+
+    ///6-2 initiate the inner piece itself
+    Piece_model inner_piece = Piece_model(
+        pices_id['inner_id']!,
+        'inner',
+        'F',
+        'inner_id_material',
+        box_width - 36,
+        box_height -36,
+        backpanel_thickness,
+        Point_model(
+            box_origin.x_coordinate +18,
+            box_origin.y_coordinate +18, 0),
+        inner_piece_piece_faces);
+
+    ////////////////////////////////////////////////////////////////////////////
+
     box_pieces = [];
     box_pieces.add(top_piece);
     box_pieces.add(right_piece);
     box_pieces.add(base_piece);
     box_pieces.add(left_piece);
     box_pieces.add(back_panel_piece);
+    box_pieces.add(inner_piece);
 
-    // print_pieces_coordinate();
-
-
+    print_pieces_coordinate();
 
   }
 
@@ -282,13 +317,11 @@ class Box_model {
       print(' piece name :${box_pieces[i].piece_id}');
       print(' piece id  :${box_pieces[i].piece_name}');
 
-        // print('p L D : X${box_pieces[i].cordinate_3d.xy_0_plane[0].x_coordinate} , Y:${box_pieces[i].cordinate_3d.xy_0_plane[0].y_coordinate}');
-        // print('p L U : X${box_pieces[i].cordinate_3d.xy_0_plane[1].x_coordinate} , Y:${box_pieces[i].cordinate_3d.xy_0_plane[1].y_coordinate}');
-        // print('p R U : X${box_pieces[i].cordinate_3d.xy_0_plane[0].x_coordinate} '
-        //     ', Y:${box_pieces[i].cordinate_3d.xy_0_plane[0].y_coordinate}');
-        // print('p R D : X${box_pieces[i].cordinate_3d.xy_0_plane[3].x_coordinate} , Y:${box_pieces[i].cordinate_3d.xy_0_plane[3].y_coordinate}');
-
-        // print('=============');
+       print('p L D : X${box_pieces[i].cordinate_3d.xy_0_plane[0].x_coordinate} , Y:${box_pieces[i].cordinate_3d.xy_0_plane[0].y_coordinate}');
+       print('p L U : X${box_pieces[i].cordinate_3d.xy_0_plane[1].x_coordinate} , Y:${box_pieces[i].cordinate_3d.xy_0_plane[1].y_coordinate}');
+       print('p R U : X${box_pieces[i].cordinate_3d.xy_0_plane[2].x_coordinate} , Y:${box_pieces[i].cordinate_3d.xy_0_plane[2].y_coordinate}');
+       print('p R D : X${box_pieces[i].cordinate_3d.xy_0_plane[3].x_coordinate} , Y:${box_pieces[i].cordinate_3d.xy_0_plane[3].y_coordinate}');
+       print('=============');
 
     }
   }

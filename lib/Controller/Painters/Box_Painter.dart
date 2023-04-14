@@ -39,15 +39,20 @@ class Box_Painter extends CustomPainter {
 
   draw_box(Canvas canvas) {
 
-    Paint paint = Paint()
+    Paint line_painter = Paint()
       ..strokeWidth = 1
       ..style = PaintingStyle.stroke
       ..color = Colors.black;
 
 
-    Paint paint_color = Paint()
+    Paint pieces_filler = Paint()
       ..style = PaintingStyle.fill
       ..color = Colors.blue[100]!;
+
+
+    Paint inners_filler = Paint()
+      ..style = PaintingStyle.fill
+      ..color = Colors.teal[100]!;
 
     for (int i = 0; i < box_model.box_pieces.length; i++) {
       Piece_model piece_model = box_model.box_pieces[i];
@@ -67,11 +72,17 @@ class Box_Painter extends CustomPainter {
 
       if(piece_model.piece_id==hover_id){
 
-        canvas.drawPath(path, paint_color);
-        canvas.drawPath(path, paint);
+        if(piece_model.piece_name=='inner'){
+
+          canvas.drawPath(path, inners_filler);
+          canvas.drawPath(path, line_painter);
+        }else{
+          canvas.drawPath(path, pieces_filler);
+          canvas.drawPath(path, line_painter);
+        }
 
       }else{
-        canvas.drawPath(path, paint);
+        canvas.drawPath(path, line_painter);
 
       }
     }
