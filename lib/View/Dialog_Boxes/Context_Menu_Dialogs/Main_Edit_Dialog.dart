@@ -1,3 +1,6 @@
+import 'package:auto_cam/View/Dialog_Boxes/Context_Menu_Dialogs/Add_Door_Dialog.dart';
+import 'package:auto_cam/View/Dialog_Boxes/Context_Menu_Dialogs/Add_Drawer_Dialog.dart';
+import 'package:auto_cam/View/Dialog_Boxes/Context_Menu_Dialogs/Add_Partition_Dialog.dart';
 import 'package:auto_cam/View/Dialog_Boxes/Context_Menu_Dialogs/Add_Shelf_Dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -17,7 +20,8 @@ class Main_Edit_Dialog extends StatelessWidget {
               Get.defaultDialog(
                   title: 'add shelf',
                   content: Add_Shelf_Dialog()
-              );            },
+              );
+              },
             child: Text(
               'Add Shelf',
               style: TextStyle(fontSize: 18),
@@ -32,6 +36,11 @@ class Main_Edit_Dialog extends StatelessWidget {
           ),
           InkWell(
             onTap: () {
+              Navigator.of(Get.overlayContext!).pop();
+              Get.defaultDialog(
+                  title: 'add Partition',
+                  content: Add_Partition_Dialog()
+              );
             },
             child: Text(
               'Add Partition',
@@ -46,7 +55,13 @@ class Main_Edit_Dialog extends StatelessWidget {
             ),
           ),
           InkWell(
-            onTap: () {},
+            onTap: () {
+              Navigator.of(Get.overlayContext!).pop();
+              Get.defaultDialog(
+                  title: 'add Drawer',
+                  content: Add_Drawer_Dialog()
+              );
+            },
             child: Text(
               'Add Drawer',
               style: TextStyle(fontSize: 18),
@@ -60,7 +75,13 @@ class Main_Edit_Dialog extends StatelessWidget {
             ),
           ),
           InkWell(
-            onTap: () {},
+            onTap: () {
+              Navigator.of(Get.overlayContext!).pop();
+              Get.defaultDialog(
+                  title: 'add Door',
+                  content: Add_Door_Dialog()
+              );
+            },
             child: Text(
               'Add Door',
               style: TextStyle(fontSize: 18),

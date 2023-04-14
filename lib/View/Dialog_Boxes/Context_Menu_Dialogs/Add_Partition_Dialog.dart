@@ -4,6 +4,9 @@ class Add_Partition_Dialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Container(
+      width: 400,height:500,color: Colors.teal,
+      child: Text('Add Partition'),
+    );
   }
 }
