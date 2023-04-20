@@ -4,7 +4,6 @@ import 'package:auto_cam/Model/Main_Models/Piece_model.dart';
 import 'package:auto_cam/Model/Main_Models/Point_model.dart';
 
 class Box_model {
-
   late int box_id;
   late double box_width;
   late double box_height;
@@ -14,12 +13,16 @@ class Box_model {
   late Point_model box_origin;
   late List<Piece_model> box_pieces;
 
+  int get_ID() {
+
+    print(box_pieces.length);
+    return box_pieces.length + 1;
+  }
 
   Box_model(this.box_width, this.box_height, this.box_depth,
       this.material_thickness, this.backpanel_thickness) {
-    box_id = 2;
-    box_origin = Point_model(0,0,0);
-
+    box_id = 0;
+    box_origin = Point_model(0, 0, 0);
     ////////////////////////////////////////////////////////////////////////////
 
     /// initiate the details of the box (id,name,size,Pieces)
@@ -40,46 +43,33 @@ class Box_model {
     /// note : we consider the main inner or inner area has the id of back panel
     /// and it will always like this , the different id for inner will be for new inners
 
-    Map<String, int> pices_id = {
-      "out_off_the_box": 0,
-      "the_box_front": 1,
-      "back_panel_id": 2,
-      "top_id": 3,
-      "right_id": 4,
-      "base_id": 5,
-      "left_id": 6,
-      "inner_id": 7,
-    };
 
     ////////////////////////////////////////////////////////////////////////////
 
     /// 1- initiate the (top) piece of the box
     /// 1-1 initiate the Faces of the top piece
-    Face_model top_piece_right_face =
-        Face_model('right_face', [pices_id['right_id']!], [], []);
-    Face_model top_piece_left_face =
-        Face_model('left_face', [pices_id['left_id']!], [], []);
-    Face_model top_piece_front_face =
-        Face_model('front_face', [pices_id['the_box_front']!], [], []);
-    Face_model top_piece_back_face =
-        Face_model('back_face', [pices_id['out_off_the_box']!], [], []);
-    Face_model top_piece_top_face =
-        Face_model('top_face', [pices_id['out_off_the_box']!], [], []);
-    Face_model top_piece_base_face =
-        Face_model('bottom_face', [pices_id['back_panel_id']!], [], []);
 
-    List<Face_model> top_piece_piece_faces = [
-      top_piece_right_face,
-      top_piece_left_face,
-      top_piece_front_face,
-      top_piece_back_face,
-      top_piece_top_face,
-      top_piece_base_face,
-    ];
+    Single_Face top_Piece_top_face   =Single_Face([0], [], []);
+    Single_Face top_Piece_right_face =Single_Face([4], [], []);
+    Single_Face top_Piece_base_face  =Single_Face([7], [], []);
+    Single_Face top_Piece_left_face  =Single_Face([6], [], []);
+    Single_Face top_Piece_front_face =Single_Face([1], [], []);
+    Single_Face top_Piece_back_face  =Single_Face([0], [], []);
+
+
+      Face_model top_faces=Face_model(
+          top_Piece_top_face  ,
+          top_Piece_right_face,
+          top_Piece_base_face ,
+          top_Piece_left_face ,
+          top_Piece_front_face,
+          top_Piece_back_face
+      );
+
 
     ///1-2 initiate the top piece itself
     Piece_model top_piece = Piece_model(
-        pices_id['top_id']!,
+        1,
         'top',
         'H',
         'box_material',
@@ -88,39 +78,38 @@ class Box_model {
         material_thickness,
         Point_model(
             box_origin.x_coordinate + pieces_thickness['left_thickness']!,
-            box_origin.y_coordinate + box_height-pieces_thickness['top_thickness']!,
+            box_origin.y_coordinate +
+                box_height -
+                pieces_thickness['top_thickness']!,
             0),
-        top_piece_piece_faces);
+        top_faces);
 
     ////////////////////////////////////////////////////////////////////////////
 
     /// 2- initiate the (right) piece of the box
     /// 2-1 initiate the Faces of the right piece
-    Face_model right_piece_right_face =
-        Face_model('right_face', [pices_id['out_off_the_box']!], [], []);
-    Face_model right_piece_left_face =
-        Face_model('left_face', [pices_id['back_panel_id']!], [], []);
-    Face_model right_piece_front_face =
-        Face_model('front_face', [pices_id['the_box_front']!], [], []);
-    Face_model right_piece_back_face =
-        Face_model('back_face', [pices_id['out_off_the_box']!], [], []);
-    Face_model right_piece_top_face =
-        Face_model('top_face', [pices_id['out_off_the_box']!], [], []);
-    Face_model right_piece_base_face =
-        Face_model('bottom_face', [pices_id['out_off_the_box']!], [], []);
+    ///
 
-    List<Face_model> right_piece_piece_faces = [
-      right_piece_right_face,
-      right_piece_left_face,
-      right_piece_front_face,
-      right_piece_back_face,
-      right_piece_top_face,
-      right_piece_base_face,
-    ];
+    Single_Face right_Piece_top_face   =Single_Face([0], [], []);
+    Single_Face right_Piece_right_face =Single_Face([0], [], []);
+    Single_Face right_Piece_base_face  =Single_Face([0], [], []);
+    Single_Face right_Piece_left_face  =Single_Face([3,7,5], [], []);
+    Single_Face right_Piece_front_face =Single_Face([1], [], []);
+    Single_Face right_Piece_back_face  =Single_Face([0], [], []);
+
+
+    Face_model right_faces=Face_model(
+        right_Piece_top_face  ,
+        right_Piece_right_face,
+        right_Piece_base_face ,
+        right_Piece_left_face ,
+        right_Piece_front_face,
+        right_Piece_back_face
+    );
 
     ///2-2 initiate the right piece itself
     Piece_model right_piece = Piece_model(
-        pices_id['right_id']!,
+        2,
         'right',
         'V',
         'box_material',
@@ -133,76 +122,67 @@ class Box_model {
                 pieces_thickness['right_thickness']!,
             box_origin.y_coordinate,
             0),
-        right_piece_piece_faces);
+        right_faces);
 
     ////////////////////////////////////////////////////////////////////////////
 
     /// 3- initiate the (left) piece of the box
     /// 3-1 initiate the Faces of the left piece
-    Face_model left_piece_right_face =
-        Face_model('right_face', [pices_id['back_panel_id']!], [], []);
-    Face_model left_piece_left_face =
-        Face_model('left_face', [pices_id['out_off_the_box']!], [], []);
-    Face_model left_piece_front_face =
-        Face_model('front_face', [pices_id['the_box_front']!], [], []);
-    Face_model left_piece_back_face =
-        Face_model('back_face', [pices_id['out_off_the_box']!], [], []);
-    Face_model left_piece_top_face =
-        Face_model('top_face', [pices_id['out_off_the_box']!], [], []);
-    Face_model left_piece_base_face =
-        Face_model('bottom_face', [pices_id['out_off_the_box']!], [], []);
 
-    List<Face_model> left_piece_piece_faces = [
-      left_piece_right_face,
-      left_piece_left_face,
-      left_piece_front_face,
-      left_piece_back_face,
-      left_piece_top_face,
-      left_piece_base_face,
-    ];
+    Single_Face left_Piece_top_face   =Single_Face([0], [], []);
+    Single_Face left_Piece_right_face =Single_Face([3,7,5], [], []);
+    Single_Face left_Piece_base_face  =Single_Face([0], [], []);
+    Single_Face left_Piece_left_face  =Single_Face([0], [], []);
+    Single_Face left_Piece_front_face =Single_Face([1], [], []);
+    Single_Face left_Piece_back_face  =Single_Face([0], [], []);
+
+
+    Face_model left_faces=Face_model(
+        left_Piece_top_face   ,
+        left_Piece_right_face ,
+        left_Piece_base_face  ,
+        left_Piece_left_face  ,
+        left_Piece_front_face ,
+        left_Piece_back_face
+    );
 
     ///3-2 initiate the left piece itself
     Piece_model left_piece = Piece_model(
-        pices_id['left_id']!,
+        4,
         'left',
         'V',
         'box_material',
         box_depth,
         box_height,
         material_thickness,
-        Point_model(
-            box_origin.x_coordinate, box_origin.y_coordinate, 0),
-        left_piece_piece_faces);
+        Point_model(box_origin.x_coordinate, box_origin.y_coordinate, 0),
+        left_faces);
 
     ////////////////////////////////////////////////////////////////////////////
 
     /// 4- initiate the (base) piece of the box
     /// 4-1 initiate the Faces of the base piece
-    Face_model base_piece_right_face =
-        Face_model('right_face', [pices_id['right_id']!], [], []);
-    Face_model base_piece_left_face =
-        Face_model('left_face', [pices_id['left_id']!], [], []);
-    Face_model base_piece_front_face =
-        Face_model('front_face', [pices_id['the_box_front']!], [], []);
-    Face_model base_piece_back_face =
-        Face_model('back_face', [pices_id['out_off_the_box']!], [], []);
-    Face_model base_piece_top_face =
-        Face_model('top_face', [pices_id['back_panel_id']!], [], []);
-    Face_model base_piece_base_face =
-        Face_model('bottom_face', [pices_id['out_off_the_box']!], [], []);
 
-    List<Face_model> base_piece_piece_faces = [
-      base_piece_right_face,
-      base_piece_left_face,
-      base_piece_front_face,
-      base_piece_back_face,
-      base_piece_top_face,
-      base_piece_base_face,
-    ];
+    Single_Face base_Piece_top_face   =Single_Face([7], [], []);
+    Single_Face base_Piece_right_face =Single_Face([4], [], []);
+    Single_Face base_Piece_base_face  =Single_Face([0], [], []);
+    Single_Face base_Piece_left_face  =Single_Face([6], [], []);
+    Single_Face base_Piece_front_face =Single_Face([1], [], []);
+    Single_Face base_Piece_back_face  =Single_Face([0], [], []);
+
+
+    Face_model base_faces=Face_model(
+        base_Piece_top_face   ,
+        base_Piece_right_face ,
+        base_Piece_base_face  ,
+        base_Piece_left_face  ,
+        base_Piece_front_face ,
+        base_Piece_back_face
+    );
 
     ///4-2 initiate the base piece itself
     Piece_model base_piece = Piece_model(
-        pices_id['base_id']!,
+        3,
         'base',
         'H',
         'box_material',
@@ -211,9 +191,9 @@ class Box_model {
         material_thickness,
         Point_model(
             box_origin.x_coordinate + pieces_thickness['left_thickness']!,
-            box_origin.y_coordinate ,
+            box_origin.y_coordinate,
             0),
-        base_piece_piece_faces);
+        base_faces);
 
     ////////////////////////////////////////////////////////////////////////////
 
@@ -221,77 +201,77 @@ class Box_model {
 
     /// 5- initiate the (back_panel) piece of the box
     /// 5-1 initiate the Faces of the back_panel piece
-    Face_model back_panel_piece_right_face =
-        Face_model('right_face', [pices_id['right_id']!], [], []);
-    Face_model back_panel_piece_left_face =
-        Face_model('left_face', [pices_id['left_id']!], [], []);
-    Face_model back_panel_piece_front_face =
-        Face_model('front_face', [pices_id['the_box_front']!], [], []);
-    Face_model back_panel_piece_back_face =
-        Face_model('back_face', [pices_id['out_off_the_box']!], [], []);
-    Face_model back_panel_piece_top_face =
-        Face_model('top_face', [pices_id['top_id']!], [], []);
-    Face_model back_panel_piece_base_face =
-        Face_model('bottom_face', [pices_id['base_id']!], [], []);
 
-    List<Face_model> back_panel_piece_piece_faces = [
-      back_panel_piece_right_face,
-      back_panel_piece_left_face,
-      back_panel_piece_front_face,
-      back_panel_piece_back_face,
-      back_panel_piece_top_face,
-      back_panel_piece_base_face,
-    ];
+
+    Single_Face back_panel_Piece_top_face   =Single_Face([3], [], []);
+    Single_Face back_panel_Piece_right_face =Single_Face([4], [], []);
+    Single_Face back_panel_Piece_base_face  =Single_Face([5], [], []);
+    Single_Face back_panel_Piece_left_face  =Single_Face([6], [], []);
+    Single_Face back_panel_Piece_front_face =Single_Face([1], [], []);
+    Single_Face back_panel_Piece_back_face  =Single_Face([0], [], []);
+
+
+    Face_model back_panel_faces=Face_model(
+        back_panel_Piece_top_face  ,
+        back_panel_Piece_right_face,
+        back_panel_Piece_base_face ,
+        back_panel_Piece_left_face ,
+        back_panel_Piece_front_face,
+        back_panel_Piece_back_face
+    );
+
 
     ///5-2 initiate the base piece itself
     Piece_model back_panel_piece = Piece_model(
-        pices_id['back_panel_id']!,
+        0,
         'back_panel',
         'F',
         'back_panel_id_material',
         box_width - 18,
-        box_height -18,
+        box_height - 18,
         backpanel_thickness,
         Point_model(
             box_origin.x_coordinate + 9, box_origin.y_coordinate + 9, 0),
-        back_panel_piece_piece_faces);
+        back_panel_faces);
 
     ////////////////////////////////////////////////////////////////////////////
 
     /// 6- initiate the (main inner) piece of the box
     /// 6-1 initiate the Faces of the inner piece
-    ///
-    Face_model inner_piece_right_face  = Face_model('right_face', [pices_id['right_id']!], [], []);
-    Face_model inner_piece_left_face   = Face_model('left_face', [pices_id['left_id']!], [], []);
-    Face_model inner_piece_top_face    = Face_model('top_face', [pices_id['top_id']!], [], []);
-    Face_model inner_piece_base_face   = Face_model('bottom_face', [pices_id['base_id']!], [], []);
 
-    List<Face_model> inner_piece_piece_faces = [
-     inner_piece_right_face,
-     inner_piece_left_face ,
-     inner_piece_top_face  ,
-     inner_piece_base_face ,
-    ];
+    Single_Face inner_Piece_top_face   =Single_Face([3], [], []);
+    Single_Face inner_Piece_right_face =Single_Face([4], [], []);
+    Single_Face inner_Piece_base_face  =Single_Face([5], [], []);
+    Single_Face inner_Piece_left_face  =Single_Face([6], [], []);
+    Single_Face inner_Piece_front_face =Single_Face([1], [], []);
+    Single_Face inner_Piece_back_face  =Single_Face([0], [], []);
+
+
+    Face_model inner_panel_faces=Face_model(
+       inner_Piece_top_face  ,
+       inner_Piece_right_face,
+       inner_Piece_base_face ,
+       inner_Piece_left_face ,
+       inner_Piece_front_face,
+       inner_Piece_back_face ,
+    );
 
     ///6-2 initiate the inner piece itself
     Piece_model inner_piece = Piece_model(
-        pices_id['inner_id']!,
+        5,
         'inner',
         'F',
         'inner_id_material',
         box_width - 36,
-        box_height -36,
+        box_height - 36,
         backpanel_thickness,
         Point_model(
-            box_origin.x_coordinate +18,
-            box_origin.y_coordinate +18, 0),
-        inner_piece_piece_faces);
+            box_origin.x_coordinate + 18, box_origin.y_coordinate + 18, 0),
+        inner_panel_faces);
 
     ////////////////////////////////////////////////////////////////////////////
 
     box_pieces = [];
-    box_pieces.add(back_panel_piece);
-    box_pieces.add(back_panel_piece);
     box_pieces.add(back_panel_piece);
     box_pieces.add(top_piece);
     box_pieces.add(right_piece);
@@ -299,32 +279,97 @@ class Box_model {
     box_pieces.add(left_piece);
     box_pieces.add(inner_piece);
 
-    print_pieces_coordinate();
-
   }
 
 
-  Add_shelf() {}
 
-  Add_partation() {}
+  add_Shelf(int inner, double top_Distence, double frontage_Gap,
+      double material_thickness)
+  {
+
+
+    double down_Distence = box_pieces[inner].Piece_height - top_Distence - material_thickness;
+    double depth_of_shelf = box_depth - 24 - frontage_Gap;
+
+
+    int id_reference=box_pieces.length;
+    int new_piece_id=id_reference+1;
+    int new_inner_id=new_piece_id+1;
+
+    Face_model old_inner_face=box_pieces[inner].piece_faces;
+
+
+    old_inner_face.base_face=Single_Face([new_piece_id], [], []);
+    Piece_model old_inner=Piece_model(id_reference, 'inner', 'F', 'inner',
+        box_pieces[inner].Piece_width, top_Distence,
+        10,
+        Point_model(
+            box_pieces[inner].piece_origin.x_coordinate,
+            box_pieces[inner].piece_origin.y_coordinate+down_Distence+18,
+            box_pieces[inner].piece_origin.z_coordinate),
+        old_inner_face);
+
+
+    Face_model new_inner_face=box_pieces[inner].piece_faces;
+
+    new_inner_face.top_face=Single_Face([new_piece_id], [], []);
+
+    Piece_model new_inner=Piece_model(new_inner_id, 'inner', 'F', 'inner',
+        box_pieces[inner].Piece_width, down_Distence,
+        10,
+        Point_model(
+            box_pieces[inner].piece_origin.x_coordinate,
+            box_pieces[inner].piece_origin.y_coordinate,
+            box_pieces[inner].piece_origin.z_coordinate),
+        new_inner_face);
+
+
+    Single_Face new_Piece_top_face   =Single_Face([id_reference], [], []);
+    Single_Face new_Piece_right_face =box_pieces[inner].piece_faces.right_face;
+    Single_Face new_Piece_base_face  =Single_Face([new_inner_id], [], []);
+    Single_Face new_Piece_left_face  =box_pieces[inner].piece_faces.left_face;
+    Single_Face new_Piece_front_face =Single_Face([1], [], []);
+    Single_Face new_Piece_back_face  =Single_Face([0], [], []);
+
+    Face_model new_piece_faces=Face_model(
+         new_Piece_top_face  ,
+         new_Piece_right_face,
+         new_Piece_base_face ,
+         new_Piece_left_face ,
+         new_Piece_front_face,
+         new_Piece_back_face
+    );
+
+    Piece_model new_piece=Piece_model(new_piece_id, 'new shelf', 'H', 'material_name',
+        box_pieces[inner].Piece_height,
+        box_pieces[inner].Piece_width,
+        material_thickness,
+        Point_model(
+          box_pieces[inner].piece_origin.x_coordinate,
+          box_pieces[inner].piece_origin.y_coordinate+down_Distence,
+            box_pieces[inner].piece_origin.z_coordinate
+        ),
+        new_piece_faces);
+
+
+  Iterable<Piece_model> piece_where=  box_pieces.where((element) => element.piece_id==inner);
+
+piece_where.forEach((element) {print(element.piece_id);});
+
+    box_pieces.add(old_inner);
+    box_pieces.add(new_piece);
+    box_pieces.add(new_inner);
+
+
+
+  }
+
+  Add_partation() {
+    box_width=200;
+  }
 
   Add_Drawer() {}
 
   Add_Door() {}
 
-
-  print_pieces_coordinate(){
-    for(int i=0;i<box_pieces.length;i++){
-
-      print(' piece name :${box_pieces[i].piece_id}');
-      print(' piece id  :${box_pieces[i].piece_name}');
-
-       print('p L D : X${box_pieces[i].cordinate_3d.xy_0_plane[0].x_coordinate} , Y:${box_pieces[i].cordinate_3d.xy_0_plane[0].y_coordinate}');
-       print('p L U : X${box_pieces[i].cordinate_3d.xy_0_plane[1].x_coordinate} , Y:${box_pieces[i].cordinate_3d.xy_0_plane[1].y_coordinate}');
-       print('p R U : X${box_pieces[i].cordinate_3d.xy_0_plane[2].x_coordinate} , Y:${box_pieces[i].cordinate_3d.xy_0_plane[2].y_coordinate}');
-       print('p R D : X${box_pieces[i].cordinate_3d.xy_0_plane[3].x_coordinate} , Y:${box_pieces[i].cordinate_3d.xy_0_plane[3].y_coordinate}');
-       print('=============');
-
-    }
-  }
 }

@@ -11,7 +11,7 @@ class Box_Painter extends CustomPainter {
   late Box_model box_model;
 
 
-  Box_Painter( Box_model box_model ,double scale, Size screen_size,int hover_id,Offset m) {
+  Box_Painter( Box_model box_model ,double scale, Size screen_size,int hover_id) {
     this.box_model=box_model;
     this.drawing_scale = scale;
     this.screen_Size = screen_size;
@@ -55,6 +55,7 @@ class Box_Painter extends CustomPainter {
       ..color = Colors.teal[100]!;
 
     for (int i = 0; i < box_model.box_pieces.length; i++) {
+
       Piece_model piece_model = box_model.box_pieces[i];
 
       Point_model p1 = piece_model.cordinate_3d.xy_0_plane[0];
@@ -85,6 +86,27 @@ class Box_Painter extends CustomPainter {
         canvas.drawPath(path, line_painter);
 
       }
+
+      draw_text(canvas, '${piece_model.piece_id}:${piece_model.piece_name}',
+          Offset(
+              piece_model.piece_center.x_coordinate*drawing_scale+box_model.box_origin.x_coordinate-6 *drawing_scale,
+              box_model.box_origin.y_coordinate-piece_model.piece_center.y_coordinate*drawing_scale-11*drawing_scale
+          ), 16*drawing_scale);
+
     }
   }
+
+
+  draw_text(Canvas c, String text, Offset offset,double t_size) {
+
+    TextSpan ts = TextSpan(
+        text: text, style: TextStyle(fontSize: t_size, color: Colors.black));
+    TextPainter tp = TextPainter(text: ts, textDirection: TextDirection.ltr);
+    tp.layout();
+
+    tp.paint(c, offset);
+
+  }
+
+
 }

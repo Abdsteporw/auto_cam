@@ -11,45 +11,37 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class Draw_Controller extends GetxController {
-  /// scale value that can changes from box editor screen and it will rebuild the box (recall box_Painter with new parameter)
+
   RxDouble drawing_scale = (0.8).obs;
-
-  /// screen size , its changed from the box edit screen ,and this value here observable from build widget of Box Painter
   Rx<Size> screen_size = Size(800, 600).obs;
-
-  /// here we will listen to mouse cursor position , that will changed from drawing screen
   Rx<Offset> mouse_position = Offset(0, 0).obs;
 
   Box_Repository box_repository = Get.find();
-
-  /// piece id that the mouse hover on to use it when we draw the box , we will give this piece different color
   int hover_id = 90;
 
-  late Box_model box_model;
-
   Draw_Controller() {
-    box_model = box_repository.box_model.value;
+    // print('DRaw ..... here ########################');
   }
 
-  /// main draw method that call Box_Painter witch is the custom painter for box view screen
-  /// this method shod get box model as parameter and pass that box_model to box_painter to draw it
-  Box_Painter draw_Box(double w) {
-    hover_id_find(box_model);
-    box_model = box_repository.box_model.value;
-    Box_Painter boxPainter = Box_Painter(box_model, drawing_scale.value,
-        Size(w, screen_size.value.height), hover_id, mouse_position.value);
+  Box_model get_box() {
+    return box_repository.box_model.value;
+  }
 
+  Box_Painter draw_Box() {
+
+    Box_model box_model = get_box() ;
+    double w = screen_size.value.width - 300;
+    hover_id_find(box_model);
+    Box_Painter boxPainter = Box_Painter(box_model, drawing_scale.value,
+        Size(w, screen_size.value.height), hover_id);
+
+    print('${hover_id}');
     return boxPainter;
   }
 
   add_Box(Box_model box_model) {
-    box_repository.add_Box(box_model);
-  }
-
-  Box_model get_default_box() {
-    Box_model box_model = box_repository.box_model.value;
-
-    return box_model;
+    box_repository.box_model.value = box_model;
+    draw_Box();
   }
 
   /// here tow method :
@@ -60,6 +52,7 @@ class Draw_Controller extends GetxController {
 
   /// the first one :
   hover_id_find(Box_model box_model) {
+    Point_model my_origin = box_model.box_origin;
     List<Piece_model> box_pieces = box_model.box_pieces;
 
     hover_id = 100;
@@ -67,28 +60,29 @@ class Draw_Controller extends GetxController {
       Piece_model p = box_pieces[i];
       if (p.piece_name == 'back_panel') {
         continue;
-      } else if (check_position(p)) {
-        hover_id = p.piece_id;
+      } else if (check_position(p, my_origin)) {
+        hover_id = i;
       }
     }
+
   }
 
   ///the second one :
-  bool check_position(Piece_model p) {
+  bool check_position(Piece_model p, Point_model my_origin) {
     bool is_hover = false;
 
     Cordinate_3D cordinate_3d = p.cordinate_3d;
 
     List<Point_model> piece_points = cordinate_3d.xy_0_plane;
 
-    double left_down_point_x = (box_model.box_origin.x_coordinate +
+    double left_down_point_x = (my_origin.x_coordinate +
         piece_points[0].x_coordinate * drawing_scale.value);
-    double left_down_point_y = (box_model.box_origin.y_coordinate -
+    double left_down_point_y = (my_origin.y_coordinate -
         piece_points[0].y_coordinate * drawing_scale.value);
 
-    double right_up_point_x = (box_model.box_origin.x_coordinate +
+    double right_up_point_x = (my_origin.x_coordinate +
         piece_points[2].x_coordinate * drawing_scale.value);
-    double right_up_point_y = (box_model.box_origin.y_coordinate -
+    double right_up_point_y = (my_origin.y_coordinate -
         piece_points[2].y_coordinate * drawing_scale.value);
 
     double mouse_position_x = mouse_position.value.dx;
@@ -106,37 +100,39 @@ class Draw_Controller extends GetxController {
     return is_hover;
   }
 
+  add_shelf(
+      double top_Distence, double frontage_Gap, double material_thickness)
+  {
+    box_repository.box_model.value.add_Shelf(hover_id, top_Distence, frontage_Gap, material_thickness);
+    print_pieces_coordinate();
+  }
 
-
-  String minu_title() {
-    String dialogs_titles='';
-
+  String minu_title()
+  {
+    String dialogs_titles = '';
 
     if (!(hover_id == 100)) {
-      if (box_model.box_pieces[hover_id].piece_name == 'inner') {
-        dialogs_titles='Edit Box';
+      if (box_repository.box_model.value.box_pieces[hover_id].piece_name == 'inner') {
+        dialogs_titles = 'Edit Box';
       } else {
-        dialogs_titles='Edit Piece';
-
+        dialogs_titles = 'Edit Piece';
       }
     } else {
-      dialogs_titles='properties';
-
+      dialogs_titles = 'properties';
     }
     return dialogs_titles;
   }
 
-  Widget Context_Menu() {
+  Widget Context_Menu()
+  {
     late Widget my_widget;
 
     if (!(hover_id == 100)) {
-      if (box_model.box_pieces[hover_id].piece_name == 'inner') {
-
+      if (box_repository.box_model.value.box_pieces[hover_id].piece_name ==
+          'inner') {
         my_widget = Main_Edit_Dialog();
       } else {
-
         my_widget = Container(
-
           child: Text('pieces menu'),
         );
       }
@@ -148,5 +144,22 @@ class Draw_Controller extends GetxController {
 
     return my_widget;
   }
+
+  print_pieces_coordinate() {
+
+    for (int i = 0; i < box_repository.box_model.value.box_pieces.length; i++) {
+      print(' piece id :${box_repository.box_model.value.box_pieces[i].piece_id}');
+      print(' piece name  :${box_repository.box_model.value.box_pieces[i].piece_name}');
+
+      print('p L D : X${box_repository.box_model.value.box_pieces[i].cordinate_3d.xy_0_plane[0].x_coordinate} , Y:${box_repository.box_model.value.box_pieces[i].cordinate_3d.xy_0_plane[0].y_coordinate}');
+      print('p L U : X${box_repository.box_model.value.box_pieces[i].cordinate_3d.xy_0_plane[1].x_coordinate} , Y:${box_repository.box_model.value.box_pieces[i].cordinate_3d.xy_0_plane[1].y_coordinate}');
+      print('p R U : X${box_repository.box_model.value.box_pieces[i].cordinate_3d.xy_0_plane[2].x_coordinate} , Y:${box_repository.box_model.value.box_pieces[i].cordinate_3d.xy_0_plane[2].y_coordinate}');
+      print('p R D : X${box_repository.box_model.value.box_pieces[i].cordinate_3d.xy_0_plane[3].x_coordinate} , Y:${box_repository.box_model.value.box_pieces[i].cordinate_3d.xy_0_plane[3].y_coordinate}');
+      print('hight :  ${box_repository.box_model.value.box_pieces[i].Piece_height}');
+      print('=============');
+    }
+  }
+
+
 
 }
