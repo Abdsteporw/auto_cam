@@ -71,7 +71,7 @@ class Box_Painter extends CustomPainter {
       path.lineTo(p1.x_coordinate * drawing_scale+box_model.box_origin.x_coordinate,box_model.box_origin.y_coordinate- p1.y_coordinate * drawing_scale);
 
 
-      if(piece_model.piece_id==hover_id){
+      if(i==hover_id){
 
         if(piece_model.piece_name=='inner'){
 
@@ -87,7 +87,7 @@ class Box_Painter extends CustomPainter {
 
       }
 
-      draw_text(canvas, '${piece_model.piece_id}:${piece_model.piece_name}',
+      draw_text(canvas, '${i}:${piece_model.piece_name}',
           Offset(
               piece_model.piece_center.x_coordinate*drawing_scale+box_model.box_origin.x_coordinate-6 *drawing_scale,
               box_model.box_origin.y_coordinate-piece_model.piece_center.y_coordinate*drawing_scale-11*drawing_scale

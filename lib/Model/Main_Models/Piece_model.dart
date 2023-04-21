@@ -5,7 +5,7 @@ import 'package:auto_cam/Model/Main_Models/Point_model.dart';
 
 class Piece_model{
 
-  late int    piece_id;
+  // late int    piece_id;
   late String piece_name;
   late String piece_direction;
   late String material_name;
@@ -21,7 +21,7 @@ class Piece_model{
 
   Piece_model(
 
-      this.piece_id,
+      // this.piece_id,
       this.piece_name,
       this.piece_direction,
       this.material_name,

@@ -148,14 +148,15 @@ class Draw_Controller extends GetxController {
   print_pieces_coordinate() {
 
     for (int i = 0; i < box_repository.box_model.value.box_pieces.length; i++) {
-      print(' piece id :${box_repository.box_model.value.box_pieces[i].piece_id}');
+      print(' piece id :${i}');
       print(' piece name  :${box_repository.box_model.value.box_pieces[i].piece_name}');
 
       print('p L D : X${box_repository.box_model.value.box_pieces[i].cordinate_3d.xy_0_plane[0].x_coordinate} , Y:${box_repository.box_model.value.box_pieces[i].cordinate_3d.xy_0_plane[0].y_coordinate}');
       print('p L U : X${box_repository.box_model.value.box_pieces[i].cordinate_3d.xy_0_plane[1].x_coordinate} , Y:${box_repository.box_model.value.box_pieces[i].cordinate_3d.xy_0_plane[1].y_coordinate}');
       print('p R U : X${box_repository.box_model.value.box_pieces[i].cordinate_3d.xy_0_plane[2].x_coordinate} , Y:${box_repository.box_model.value.box_pieces[i].cordinate_3d.xy_0_plane[2].y_coordinate}');
       print('p R D : X${box_repository.box_model.value.box_pieces[i].cordinate_3d.xy_0_plane[3].x_coordinate} , Y:${box_repository.box_model.value.box_pieces[i].cordinate_3d.xy_0_plane[3].y_coordinate}');
-      print('hight :  ${box_repository.box_model.value.box_pieces[i].Piece_height}');
+      print('height :  ${box_repository.box_model.value.box_pieces[i].Piece_height}');
+      print('width :  ${box_repository.box_model.value.box_pieces[i].Piece_width}');
       print('=============');
     }
   }
