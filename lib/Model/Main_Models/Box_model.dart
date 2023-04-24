@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:auto_cam/Model/Main_Models/Face_model.dart';
 import 'package:auto_cam/Model/Main_Models/Piece_model.dart';
 import 'package:auto_cam/Model/Main_Models/Point_model.dart';
@@ -260,7 +262,7 @@ class Box_model {
     box_pieces.add(inner_piece);
   }
 
-  add_Shelf(int inner, double top_Distence, double frontage_Gap, double material_thickness)
+  add_Shelf_pattern(int inner, double top_Distence, double frontage_Gap, double material_thickness)
 
   {
 
@@ -322,7 +324,7 @@ class Box_model {
         'new shelf',
         'H',
         'material_name',
-        box_depth-24-frontage_Gap,
+        depth_of_shelf,
         box_pieces[inner].Piece_width,
         material_thickness,
         Point_model(
@@ -343,6 +345,22 @@ class Box_model {
 
 
 
+  }
+
+  add_Shelf(int inner, double top_Distence, double frontage_Gap, double material_thickness,int Quantity){
+    if(Quantity==1){
+      add_Shelf_pattern(inner, top_Distence, frontage_Gap, material_thickness);
+    }
+    else{
+      if(((Quantity-1)*top_Distence+Quantity*material_thickness)<box_pieces[inner].Piece_height){
+        for(int i=0;i<Quantity;i++){
+          add_Shelf_pattern(box_pieces.length-1, top_Distence, frontage_Gap, material_thickness);
+        }
+      }else{
+        
+      }
+
+    }
   }
 
   Add_partation() {

@@ -34,8 +34,6 @@ class Draw_Controller extends GetxController {
     hover_id_find(box_model);
     Box_Painter boxPainter = Box_Painter(box_model, drawing_scale.value,
         Size(w, screen_size.value.height), hover_id);
-
-    print('${hover_id}');
     return boxPainter;
   }
 
@@ -101,9 +99,9 @@ class Draw_Controller extends GetxController {
   }
 
   add_shelf(
-      double top_Distence, double frontage_Gap, double material_thickness)
+      double top_Distence, double frontage_Gap, double material_thickness,int quantity)
   {
-    box_repository.box_model.value.add_Shelf(hover_id, top_Distence, frontage_Gap, material_thickness);
+    box_repository.box_model.value.add_Shelf(hover_id, top_Distence, frontage_Gap, material_thickness,quantity);
     print_pieces_coordinate();
   }
 
