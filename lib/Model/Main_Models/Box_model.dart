@@ -3,6 +3,8 @@ import 'dart:collection';
 import 'package:auto_cam/Model/Main_Models/Face_model.dart';
 import 'package:auto_cam/Model/Main_Models/Piece_model.dart';
 import 'package:auto_cam/Model/Main_Models/Point_model.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class Box_model {
   late int box_id;
@@ -210,8 +212,10 @@ class Box_model {
         'back_panel',
         'F',
         'back_panel_id_material',
-        box_width - 18,
-        box_height - 18,
+
+        100  ,
+        100 ,
+
         backpanel_thickness,
         Point_model(
             box_origin.x_coordinate + 9, box_origin.y_coordinate + 9, 0),
@@ -244,11 +248,11 @@ class Box_model {
         'inner',
         'F',
         'inner_id_material',
-        box_width - 36,
-        box_height - 36,
+        box_width - material_thickness*2,
+        box_height - material_thickness*2,
         backpanel_thickness,
         Point_model(
-            box_origin.x_coordinate + 18, box_origin.y_coordinate + 18, 0),
+            box_origin.x_coordinate + material_thickness, box_origin.y_coordinate + material_thickness, 0),
         inner_panel_faces);
 
     ////////////////////////////////////////////////////////////////////////////
@@ -260,6 +264,23 @@ class Box_model {
     box_pieces.add(base_piece);
     box_pieces.add(left_piece);
     box_pieces.add(inner_piece);
+
+    box_pieces[0] = Piece_model(
+      // 0,
+        '\npack panel',
+        'F',
+        'back_panel_id_material',
+
+        box_pieces[5].Piece_width+18  ,
+        box_pieces[5].Piece_height+18 ,
+
+        backpanel_thickness,
+        Point_model(
+            box_pieces[5].piece_origin.x_coordinate - 9, box_pieces[5].piece_origin.y_coordinate - 9, 0),
+        back_panel_faces);
+
+
+
   }
 
   add_Shelf_pattern(int inner, double top_Distence, double frontage_Gap, double material_thickness)
@@ -286,7 +307,7 @@ class Box_model {
         10,
         Point_model(
             box_pieces[inner].piece_origin.x_coordinate,
-            box_pieces[inner].piece_origin.y_coordinate + down_Distence + 18,
+            box_pieces[inner].piece_origin.y_coordinate + down_Distence + material_thickness,
             box_pieces[inner].piece_origin.z_coordinate),
         old_inner_face);
 
@@ -347,20 +368,41 @@ class Box_model {
 
   }
 
-  add_Shelf(int inner, double top_Distence, double frontage_Gap, double material_thickness,int Quantity){
+  add_Shelf(int inner, double top_Distence, double frontage_Gap, double material_thickness,int Quantity)
+  {
     if(Quantity==1){
-      add_Shelf_pattern(inner, top_Distence, frontage_Gap, material_thickness);
+      if(box_pieces[inner].Piece_height>top_Distence && top_Distence>0)
+      {
+        add_Shelf_pattern(
+            inner, top_Distence, frontage_Gap, material_thickness);
+        Navigator.of(Get.overlayContext!).pop();
+      }
+      else{
+        Get.defaultDialog(title: 'Error',content: Text('you enter wrong value , please check again'));
+      }
     }
+
     else{
       if(((Quantity-1)*top_Distence+Quantity*material_thickness)<box_pieces[inner].Piece_height){
+        double distance=(box_pieces[inner].Piece_height-Quantity*material_thickness)/(Quantity+1);
+
         for(int i=0;i<Quantity;i++){
-          add_Shelf_pattern(box_pieces.length-1, top_Distence, frontage_Gap, material_thickness);
+          if(i==0)
+          add_Shelf_pattern(inner, distance, frontage_Gap, material_thickness);
+          else
+            add_Shelf_pattern(box_pieces.length-1, distance, frontage_Gap, material_thickness);
+
+
         }
+        Navigator.of(Get.overlayContext!).pop();
+
+
       }else{
-        
+        Get.defaultDialog(title: 'Error',content: Text('you enter wrong value , please check again'));
       }
 
     }
+
   }
 
   Add_partation() {

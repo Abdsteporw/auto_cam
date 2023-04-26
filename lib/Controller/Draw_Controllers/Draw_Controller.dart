@@ -103,6 +103,7 @@ class Draw_Controller extends GetxController {
   {
     box_repository.box_model.value.add_Shelf(hover_id, top_Distence, frontage_Gap, material_thickness,quantity);
     print_pieces_coordinate();
+
   }
 
   String minu_title()

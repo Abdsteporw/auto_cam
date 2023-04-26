@@ -26,6 +26,48 @@ class _Add_Shelf_DialogState extends State<Add_Shelf_Dialog> {
 
   bool quantity = true;
 
+  top_changed() {
+    double double_top_distance;
+    if (Top_Distance.text.toString() != '') {
+      double_top_distance = double.parse(Top_Distance.text.toString());
+      if (quantity) {
+        if (double_top_distance > 0) {
+          Bottom_Distance.text =
+              '${drawerController.box_repository.box_model.value.box_pieces[drawerController.hover_id].Piece_height - double_top_distance}';
+        } else {
+          Bottom_Distance.text = '0';
+        }
+      }
+    }
+
+    setState(() {});
+  }
+
+  bottom_changed() {
+
+    double double_bottom_distance =
+        double.parse(Bottom_Distance.text.toString());
+    if (quantity) {
+      if (double_bottom_distance > 0) {
+        Top_Distance.text =
+            '${
+                drawerController.box_repository.box_model.value.box_pieces[drawerController.hover_id].Piece_height -
+                    double_bottom_distance}';
+      } else {
+
+        Top_Distance.text = '0';
+      }
+    }
+    setState(() {});
+  }
+
+  add_shelf() {
+    double top_Distence = quantity?double.parse(Top_Distance.text.toString()):0;
+    double frontage_Gap = double.parse(Front_Gap.text.toString());
+    double material = double.parse(Material.text.toString());
+    drawerController.add_shelf(top_Distence, frontage_Gap,material,double.parse(Quantity.text.toString()).toInt());
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -68,7 +110,7 @@ class _Add_Shelf_DialogState extends State<Add_Shelf_Dialog> {
                         height: 32,
                         child: Center(
                             child: Text(
-                          'Distance',
+                          quantity?'Distance':'',
                           style: TextStyle(fontSize: 14),
                         ))),
                   ],
@@ -153,7 +195,11 @@ class _Add_Shelf_DialogState extends State<Add_Shelf_Dialog> {
                         height: 32,
                         child: Center(
                             child: TextFormField(
+                              enabled: quantity,
                           controller: Top_Distance,
+                          onChanged: (_) {
+                            top_changed();
+                          },
                         ))),
                   ],
                 ),
@@ -174,18 +220,17 @@ class _Add_Shelf_DialogState extends State<Add_Shelf_Dialog> {
                             child: TextFormField(
                           controller: Quantity,
                           onChanged: (_) {
-if(Quantity.text!=''){
-
-  if (double.parse(Quantity.text.toString()).toInt() >
-      1) {
-    quantity = false;
-    setState(() {});
-  }else{
-    quantity=true;
-    setState(() {});
-
-  }
-}
+                            if (Quantity.text != '') {
+                              if (double.parse(Quantity.text.toString())
+                                      .toInt() >
+                                  1) {
+                                quantity = false;
+                                setState(() {});
+                              } else {
+                                quantity = true;
+                                setState(() {});
+                              }
+                            }
                           },
                         ))),
                     Container(
@@ -237,6 +282,9 @@ if(Quantity.text!=''){
                             child: TextFormField(
                           enabled: quantity,
                           controller: Bottom_proportional,
+                          onChanged: (_) {
+                            bottom_changed();
+                          },
                         ))),
                     Container(
                       width: 303,
@@ -269,14 +317,7 @@ if(Quantity.text!=''){
               children: [
                 InkWell(
                   onTap: () {
-
-                    double top_Distence =
-                        double.parse(Top_Distance.text.toString());
-                    double frontage_Gap =
-                        double.parse(Front_Gap.text.toString());
-                    drawerController.add_shelf(top_Distence, frontage_Gap, 18,
-                        double.parse(Quantity.text.toString()).toInt());
-                    Navigator.of(Get.overlayContext!).pop();
+                    add_shelf();
                   },
                   child: Container(
                     width: 80,
