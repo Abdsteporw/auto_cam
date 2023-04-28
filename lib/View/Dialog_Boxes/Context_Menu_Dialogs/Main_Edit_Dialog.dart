@@ -1,3 +1,4 @@
+import 'package:auto_cam/Controller/Draw_Controllers/Draw_Controller.dart';
 import 'package:auto_cam/View/Dialog_Boxes/Context_Menu_Dialogs/Add_Door_Dialog.dart';
 import 'package:auto_cam/View/Dialog_Boxes/Context_Menu_Dialogs/Add_Drawer_Dialog.dart';
 import 'package:auto_cam/View/Dialog_Boxes/Context_Menu_Dialogs/Add_Partition_Dialog.dart';
@@ -7,7 +8,7 @@ import 'package:get/get.dart';
 
 class Main_Edit_Dialog extends StatelessWidget {
 
-
+  Draw_Controller draw_controller=Get.find();
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -79,12 +80,14 @@ class Main_Edit_Dialog extends StatelessWidget {
                 title: 'add Door',
                 content: Add_Door_Dialog()
             );
+            // draw_controller.add_door(1.5);
           },
           child: Text(
             'Add Door',
             style: TextStyle(fontSize: 18),
           ),
         ),
+
       ],
     );
   }

@@ -49,6 +49,10 @@ class Box_Painter extends CustomPainter {
       ..style = PaintingStyle.fill
       ..color = Colors.blue[100]!;
 
+    Paint Doors_filler = Paint()
+      ..style = PaintingStyle.fill
+      ..color = Colors.brown[200]!;
+
 
     Paint inners_filler = Paint()
       ..style = PaintingStyle.fill
@@ -77,12 +81,16 @@ class Box_Painter extends CustomPainter {
 
           canvas.drawPath(path, inners_filler);
           canvas.drawPath(path, line_painter);
+        }else if(piece_model.piece_name=='Door'){
+          canvas.drawPath(path, Doors_filler);
+          canvas.drawPath(path, line_painter);
         }else{
           canvas.drawPath(path, pieces_filler);
           canvas.drawPath(path, line_painter);
         }
 
-      }else{
+      }
+      else{
         canvas.drawPath(path, line_painter);
 
       }

@@ -19,23 +19,28 @@ class _Add_Shelf_DialogState extends State<Add_Shelf_Dialog> {
 
   TextEditingController Bottom_Distance = TextEditingController();
 
-  GlobalKey<FormState> my_key=GlobalKey();
+  GlobalKey<FormState> my_key = GlobalKey();
 
   Draw_Controller drawerController = Get.find();
 
   bool quantity = true;
+  bool shelf_center = false;
+  bool distance = true;
+  bool proportional = false;
+  bool edit_enable = true;
 
   top_changed() {
     double double_top_distance;
-    if (Top_Distance.text.toString() != '') {
-      double_top_distance = double.parse(Top_Distance.text.toString());
-      if (quantity) {
-        if (double_top_distance > 0) {
-          Bottom_Distance.text =
-              '${drawerController.box_repository.box_model.value.box_pieces[drawerController.hover_id].Piece_height - double_top_distance}';
-        } else {
-          Bottom_Distance.text = '0';
-        }
+    if (distance) {
+      if (Top_Distance.text.toString() != '') {
+        double_top_distance = double.parse(Top_Distance.text.toString());
+        Bottom_Distance.text =
+            '${drawerController.box_repository.box_model.value.box_pieces[drawerController.hover_id].Piece_height - double_top_distance}';
+      }
+    } else if (proportional) {
+      if (Top_Distance.text.toString() != '') {
+        double_top_distance = double.parse(Top_Distance.text.toString());
+        Bottom_Distance.text = '${(100 - double_top_distance).toInt()}';
       }
     }
 
@@ -43,29 +48,72 @@ class _Add_Shelf_DialogState extends State<Add_Shelf_Dialog> {
   }
 
   bottom_changed() {
-    double double_bottom_distance =
-        double.parse(Bottom_Distance.text.toString());
-    if (quantity) {
-      if (double_bottom_distance > 0) {
-        Top_Distance.text =
+    double double_bottom_distance;
+    if (distance) {
+      if (Bottom_Distance.text.toString() != '') {
+        double_bottom_distance = double.parse(Bottom_Distance.text.toString());
+        Top_Distance.text = ''
             '${drawerController.box_repository.box_model.value.box_pieces[drawerController.hover_id].Piece_height - double_bottom_distance}';
-      } else {
-        Top_Distance.text = '0';
+      }
+    } else if (proportional) {
+      if (Bottom_Distance.text.toString() != '') {
+        double_bottom_distance = double.parse(Bottom_Distance.text.toString());
+        Top_Distance.text = '${(100 - double_bottom_distance).toInt()}';
       }
     }
+
     setState(() {});
   }
 
   add_shelf() {
-    if(my_key.currentState!.validate()){
-
-      double top_Distence =
-      quantity ? double.parse(Top_Distance.text.toString()) : 0;
-      double frontage_Gap = double.parse(Front_Gap.text.toString());
-      double material = double.parse(Material.text.toString());
-      drawerController.add_shelf(top_Distence, frontage_Gap, material,
-          double.parse(Quantity.text.toString()).toInt());
+    if (my_key.currentState!.validate()) {
+      if (!shelf_center) {
+        if (distance) {
+          double top_Distence =
+              quantity ? double.parse(Top_Distance.text.toString()) : 0;
+          double frontage_Gap = double.parse(Front_Gap.text.toString());
+          double material = double.parse(Material.text.toString());
+          drawerController.add_shelf(top_Distence, frontage_Gap, material,
+              double.parse(Quantity.text.toString()).toInt());
+        } else if (proportional) {
+          double top_Distence =
+              (double.parse(Top_Distance.text.toString()) / 100) *
+                      (drawerController.box_repository.box_model.value
+                          .box_pieces[drawerController.hover_id].Piece_height) -
+                  double.parse(Material.text.toString()) / 2;
+          double frontage_Gap = double.parse(Front_Gap.text.toString());
+          double material = double.parse(Material.text.toString());
+          drawerController.add_shelf(top_Distence, frontage_Gap, material,
+              double.parse(Quantity.text.toString()).toInt());
+        }
+      } else {
+        double top_Distence = drawerController.box_repository.box_model.value
+                    .box_pieces[drawerController.hover_id].Piece_height /
+                2 -
+            double.parse(Material.text.toString()) / 2;
+        double frontage_Gap = double.parse(Front_Gap.text.toString());
+        double material = double.parse(Material.text.toString());
+        drawerController.add_shelf(top_Distence, frontage_Gap, material,
+            double.parse(Quantity.text.toString()).toInt());
+      }
     }
+  }
+
+  shelf_center_change() {
+    if (!shelf_center) {
+      shelf_center = true;
+      distance = false;
+      proportional = false;
+      edit_enable = false;
+      Top_Distance.text = '0';
+      Bottom_Distance.text = '0';
+    } else if (shelf_center) {
+      shelf_center = false;
+      distance = true;
+      proportional = false;
+      edit_enable = true;
+    }
+    setState(() {});
   }
 
   @override
@@ -126,7 +174,8 @@ class _Add_Shelf_DialogState extends State<Add_Shelf_Dialog> {
 
         /// all details fields
         Container(
-          child: Form(key: my_key,
+          child: Form(
+            key: my_key,
             child: Column(
               children: [
                 Row(
@@ -141,18 +190,27 @@ class _Add_Shelf_DialogState extends State<Add_Shelf_Dialog> {
                       width: 120,
                       height: 40,
                       child: TextFormField(
-                        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly
+                        ],
                         controller: Quantity,
                         onChanged: (_) {
                           if (Quantity.text != '') {
                             if (double.parse(Quantity.text.toString()).toInt() >
                                 1) {
                               quantity = false;
+                              Top_Distance.text = '0';
+                              Bottom_Distance.text = '0';
                               setState(() {});
                             } else {
                               quantity = true;
                               setState(() {});
                             }
+                          }
+                        },
+                        validator: (d) {
+                          if (d!.isEmpty) {
+                            return 'add value please';
                           }
                         },
                         decoration: InputDecoration(
@@ -180,20 +238,22 @@ class _Add_Shelf_DialogState extends State<Add_Shelf_Dialog> {
                       width: 120,
                       height: 40,
                       child: TextFormField(
-                        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly
+                        ],
                         controller: Front_Gap,
-                        validator: (v){
- if(!v!.isEmpty){
-   double dv=double.parse(v.toString());
-   if(dv<200){
-print('ok');
-
-   }else{
-     print('noooooooooo');
-     return 'nooooooooo';
-   }
- }
-    },
+                        validator: (v) {
+                          if (!v!.isEmpty) {
+                            double dv = double.parse(v.toString());
+                            if (dv < 200) {
+                              print('ok');
+                            } else {
+                              return 'the Gap big';
+                            }
+                          } else {
+                            return 'add value please';
+                          }
+                        },
                         decoration: InputDecoration(
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(4),
@@ -219,13 +279,20 @@ print('ok');
                       width: 120,
                       height: 40,
                       child: TextFormField(
-                        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly
+                        ],
                         controller: Material,
                         decoration: InputDecoration(
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(4),
                           ),
                         ),
+                        validator: (d) {
+                          if (d!.isEmpty) {
+                            return 'add value please';
+                          }
+                        },
                       ),
                     ),
                     Container(width: 45, child: Text('  mm'))
@@ -247,8 +314,17 @@ print('ok');
                     Container(
                         width: 40,
                         child: Checkbox(
-                          value: true,
-                          onChanged: (bool? value) {},
+                          value: shelf_center,
+                          onChanged: (bool? value) {
+                            if (double.parse(Quantity.text.toString()) == 1) {
+                              shelf_center_change();
+                            } else {
+                              Get.defaultDialog(
+                                  title: 'ERROR',
+                                  content:
+                                      Text('the quantity bigger than 1 !!'));
+                            }
+                          },
                         )),
                     Container(
                         width: 180,
@@ -273,8 +349,16 @@ print('ok');
                     Container(
                         width: 30,
                         child: Checkbox(
-                          value: true,
-                          onChanged: (bool? value) {},
+                          value: distance,
+                          onChanged: (bool? value) {
+                            if (edit_enable) {
+                              distance = !distance;
+                              proportional = !proportional;
+                              Top_Distance.text = '0';
+                              Bottom_Distance.text = '0';
+                              setState(() {});
+                            }
+                          },
                         )),
                     Container(
                         width: 80,
@@ -284,8 +368,16 @@ print('ok');
                     Container(
                         width: 30,
                         child: Checkbox(
-                          value: true,
-                          onChanged: (bool? value) {},
+                          value: proportional,
+                          onChanged: (bool? value) {
+                            if (edit_enable) {
+                              distance = !distance;
+                              proportional = !proportional;
+                              Top_Distance.text = '0';
+                              Bottom_Distance.text = '0';
+                              setState(() {});
+                            }
+                          },
                         )),
                     Container(
                         width: 100,
@@ -309,16 +401,27 @@ print('ok');
                       width: 120,
                       height: 40,
                       child: TextFormField(
-                        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                        onChanged: (_) {
+                          top_changed();
+                        },
+                        enabled: (quantity && edit_enable),
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly
+                        ],
                         controller: Top_Distance,
                         decoration: InputDecoration(
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(4),
                           ),
                         ),
+                        validator: (d) {
+                          if (d!.isEmpty) {
+                            return 'add value please';
+                          }
+                        },
                       ),
                     ),
-                    Container(width: 45, child: Text('  mm'))
+                    Container(width: 45, child: Text(distance ? '  mm' : '  %'))
                   ],
                 ),
                 SizedBox(
@@ -336,16 +439,22 @@ print('ok');
                       width: 120,
                       height: 40,
                       child: TextFormField(
-                        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                        onChanged: (_) {
+                          bottom_changed();
+                        },
+                        enabled: (quantity && edit_enable),
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly
+                        ],
                         controller: Bottom_Distance,
                         decoration: InputDecoration(
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(4),
                           ),
-                        ),
+                        ), validator: (d) {if (d!.isEmpty) {return 'add value please';}},
                       ),
                     ),
-                    Container(width: 45, child: Text('  mm'))
+                    Container(width: 45, child: Text(distance ? '  mm' : '  %'))
                   ],
                 ),
               ],

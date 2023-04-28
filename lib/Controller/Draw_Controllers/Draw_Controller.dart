@@ -4,6 +4,7 @@ import 'package:auto_cam/Controller/Painters/Box_Painter.dart';
 import 'package:auto_cam/Controller/Repositories_Controllers/Box_Repository.dart';
 import 'package:auto_cam/Model/Main_Models/Box_model.dart';
 import 'package:auto_cam/Model/Main_Models/Coordinate_3D.dart';
+import 'package:auto_cam/Model/Main_Models/Door_Model.dart';
 import 'package:auto_cam/Model/Main_Models/Piece_model.dart';
 import 'package:auto_cam/Model/Main_Models/Point_model.dart';
 import 'package:auto_cam/View/Dialog_Boxes/Context_Menu_Dialogs/Main_Edit_Dialog.dart';
@@ -106,6 +107,15 @@ class Draw_Controller extends GetxController {
 
   }
 
+  add_partition(
+      double top_Distence, double frontage_Gap, double material_thickness,int quantity)
+  {
+    box_repository.box_model.value.add_partation(hover_id, top_Distence, frontage_Gap, material_thickness,quantity);
+    print_pieces_coordinate();
+
+  }
+
+
   String minu_title()
   {
     String dialogs_titles = '';
@@ -143,6 +153,14 @@ class Draw_Controller extends GetxController {
 
     return my_widget;
   }
+
+
+  add_door(Door_Model door_model){
+    door_model.inner_id=hover_id;
+    box_repository.box_model.value.add_door(door_model);
+  }
+
+
 
   print_pieces_coordinate() {
 

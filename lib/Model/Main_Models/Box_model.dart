@@ -1,5 +1,6 @@
 import 'dart:collection';
 
+import 'package:auto_cam/Model/Main_Models/Door_Model.dart';
 import 'package:auto_cam/Model/Main_Models/Face_model.dart';
 import 'package:auto_cam/Model/Main_Models/Piece_model.dart';
 import 'package:auto_cam/Model/Main_Models/Point_model.dart';
@@ -48,10 +49,10 @@ class Box_model {
     /// 1-1 initiate the Faces of the top piece
 
     Single_Face top_Piece_top_face = Single_Face([0], [], []);
-    Single_Face top_Piece_right_face = Single_Face([4], [], []);
-    Single_Face top_Piece_base_face = Single_Face([7], [], []);
-    Single_Face top_Piece_left_face = Single_Face([6], [], []);
-    Single_Face top_Piece_front_face = Single_Face([1], [], []);
+    Single_Face top_Piece_right_face = Single_Face([2], [], []);
+    Single_Face top_Piece_base_face = Single_Face([3], [], []);
+    Single_Face top_Piece_left_face = Single_Face([4], [], []);
+    Single_Face top_Piece_front_face = Single_Face([0], [], []);
     Single_Face top_Piece_back_face = Single_Face([0], [], []);
 
     Face_model top_faces = Face_model(
@@ -88,8 +89,8 @@ class Box_model {
     Single_Face right_Piece_top_face = Single_Face([0], [], []);
     Single_Face right_Piece_right_face = Single_Face([0], [], []);
     Single_Face right_Piece_base_face = Single_Face([0], [], []);
-    Single_Face right_Piece_left_face = Single_Face([3, 7, 5], [], []);
-    Single_Face right_Piece_front_face = Single_Face([1], [], []);
+    Single_Face right_Piece_left_face = Single_Face([1, 5, 3], [], []);
+    Single_Face right_Piece_front_face = Single_Face([0], [], []);
     Single_Face right_Piece_back_face = Single_Face([0], [], []);
 
     Face_model right_faces = Face_model(
@@ -123,10 +124,10 @@ class Box_model {
     /// 3-1 initiate the Faces of the left piece
 
     Single_Face left_Piece_top_face = Single_Face([0], [], []);
-    Single_Face left_Piece_right_face = Single_Face([3, 7, 5], [], []);
+    Single_Face left_Piece_right_face = Single_Face([1, 5,3], [], []);
     Single_Face left_Piece_base_face = Single_Face([0], [], []);
     Single_Face left_Piece_left_face = Single_Face([0], [], []);
-    Single_Face left_Piece_front_face = Single_Face([1], [], []);
+    Single_Face left_Piece_front_face = Single_Face([0], [], []);
     Single_Face left_Piece_back_face = Single_Face([0], [], []);
 
     Face_model left_faces = Face_model(
@@ -154,11 +155,11 @@ class Box_model {
     /// 4- initiate the (base) piece of the box
     /// 4-1 initiate the Faces of the base piece
 
-    Single_Face base_Piece_top_face = Single_Face([7], [], []);
-    Single_Face base_Piece_right_face = Single_Face([4], [], []);
+    Single_Face base_Piece_top_face = Single_Face([5], [], []);
+    Single_Face base_Piece_right_face = Single_Face([2], [], []);
     Single_Face base_Piece_base_face = Single_Face([0], [], []);
-    Single_Face base_Piece_left_face = Single_Face([6], [], []);
-    Single_Face base_Piece_front_face = Single_Face([1], [], []);
+    Single_Face base_Piece_left_face = Single_Face([4], [], []);
+    Single_Face base_Piece_front_face = Single_Face([0], [], []);
     Single_Face base_Piece_back_face = Single_Face([0], [], []);
 
     Face_model base_faces = Face_model(
@@ -191,11 +192,11 @@ class Box_model {
     /// 5- initiate the (back_panel) piece of the box
     /// 5-1 initiate the Faces of the back_panel piece
 
-    Single_Face back_panel_Piece_top_face = Single_Face([3], [], []);
-    Single_Face back_panel_Piece_right_face = Single_Face([4], [], []);
-    Single_Face back_panel_Piece_base_face = Single_Face([5], [], []);
-    Single_Face back_panel_Piece_left_face = Single_Face([6], [], []);
-    Single_Face back_panel_Piece_front_face = Single_Face([1], [], []);
+    Single_Face back_panel_Piece_top_face = Single_Face([1], [], []);
+    Single_Face back_panel_Piece_right_face = Single_Face([2], [], []);
+    Single_Face back_panel_Piece_base_face = Single_Face([3], [], []);
+    Single_Face back_panel_Piece_left_face = Single_Face([4], [], []);
+    Single_Face back_panel_Piece_front_face = Single_Face([0], [], []);
     Single_Face back_panel_Piece_back_face = Single_Face([0], [], []);
 
     Face_model back_panel_faces = Face_model(
@@ -226,11 +227,11 @@ class Box_model {
     /// 6- initiate the (main inner) piece of the box
     /// 6-1 initiate the Faces of the inner piece
 
-    Single_Face inner_Piece_top_face = Single_Face([3], [], []);
-    Single_Face inner_Piece_right_face = Single_Face([4], [], []);
-    Single_Face inner_Piece_base_face = Single_Face([5], [], []);
-    Single_Face inner_Piece_left_face = Single_Face([6], [], []);
-    Single_Face inner_Piece_front_face = Single_Face([1], [], []);
+    Single_Face inner_Piece_top_face = Single_Face([1], [], []);
+    Single_Face inner_Piece_right_face = Single_Face([2], [], []);
+    Single_Face inner_Piece_base_face = Single_Face([3], [], []);
+    Single_Face inner_Piece_left_face = Single_Face([4], [], []);
+    Single_Face inner_Piece_front_face = Single_Face([0], [], []);
     Single_Face inner_Piece_back_face = Single_Face([0], [], []);
 
     Face_model inner_panel_faces = Face_model(
@@ -405,11 +406,289 @@ class Box_model {
 
   }
 
-  Add_partation() {
-    box_width = 200;
+
+
+  /// Partition
+  add_partition_pattern(int inner, double left_Distence, double frontage_Gap, double material_thickness)
+  {
+
+    double right_Distence = box_pieces[inner].Piece_width - left_Distence - material_thickness;
+
+    double depth_of_partition = box_depth - 24 - frontage_Gap;
+
+    int id_reference=box_pieces.length-1;
+    int new_piece_id=id_reference+1;
+    int new_inner_id=id_reference+2;
+
+    Face_model old_inner_face = box_pieces[inner].piece_faces;
+
+    Piece_model old_inner = Piece_model(
+      // id_reference,
+        'inner',
+        'F',
+        'inner',
+        left_Distence,
+        box_pieces[inner].Piece_height,
+        10,
+        Point_model(
+            box_pieces[inner].piece_origin.x_coordinate,
+            box_pieces[inner].piece_origin.y_coordinate ,
+            box_pieces[inner].piece_origin.z_coordinate),
+        old_inner_face);
+
+    Piece_model new_inner = Piece_model(
+      // new_inner_id,
+        'inner',
+        'F',
+        'inner',
+        left_Distence,
+        box_pieces[inner].Piece_height,
+
+        10,
+        Point_model(
+            box_pieces[inner].piece_origin.x_coordinate+ left_Distence + material_thickness,
+            box_pieces[inner].piece_origin.y_coordinate,
+            box_pieces[inner].piece_origin.z_coordinate),
+        old_inner_face);
+
+    Single_Face new_Piece_top_face   = box_pieces[inner].piece_faces.top_face;
+    Single_Face new_Piece_right_face =  Single_Face([id_reference], [], []);
+    Single_Face new_Piece_base_face  = box_pieces[inner].piece_faces.base_face;
+    Single_Face new_Piece_left_face  = Single_Face([new_inner_id], [], []);
+    Single_Face new_Piece_front_face = Single_Face([1], [], []);
+    Single_Face new_Piece_back_face  = Single_Face([0], [], []);
+
+    Face_model new_piece_faces = Face_model(
+        new_Piece_top_face,
+        new_Piece_right_face,
+        new_Piece_base_face,
+        new_Piece_left_face,
+        new_Piece_front_face,
+        new_Piece_back_face);
+
+    Piece_model new_piece = Piece_model(
+      // new_piece_id,
+        'new shelf',
+        'V',
+        'material_name',
+
+        depth_of_partition,
+        box_pieces[inner].Piece_height,
+        material_thickness,
+        Point_model(
+            box_pieces[inner].piece_origin.x_coordinate+left_Distence,
+            box_pieces[inner].piece_origin.y_coordinate ,
+            box_pieces[inner].piece_origin.z_coordinate),
+        new_piece_faces);
+
+
+    box_pieces.removeAt(inner);
+
+    box_pieces.add(old_inner);
+    box_pieces.add(new_piece);
+    box_pieces.add(new_inner);
+
+    old_inner.piece_faces.base_face = Single_Face([new_piece_id], [], []);
+    new_inner.piece_faces.top_face = Single_Face([new_piece_id], [], []);
+
+
+
   }
+
+  add_partation(int inner, double left_Distence, double frontage_Gap, double material_thickness,int Quantity)
+  {
+    if(Quantity==1){
+      if(box_pieces[inner].Piece_width>left_Distence && left_Distence>0)
+      {
+        add_partition_pattern(
+            inner, left_Distence, frontage_Gap, material_thickness);
+        Navigator.of(Get.overlayContext!).pop();
+      }
+      else{
+        Get.defaultDialog(title: 'Error',content: Text('you enter wrong value , please check again'));
+      }
+    }
+
+    else{
+      if(((Quantity-1)*left_Distence+Quantity*material_thickness)<box_pieces[inner].Piece_width){
+        double distance=(box_pieces[inner].Piece_width-Quantity*material_thickness)/(Quantity+1);
+
+        for(int i=0;i<Quantity;i++){
+          if(i==0)
+            add_partition_pattern(inner, distance, frontage_Gap, material_thickness);
+          else
+            add_partition_pattern(box_pieces.length-1, distance, frontage_Gap, material_thickness);
+
+        }
+        Navigator.of(Get.overlayContext!).pop();
+
+
+      }else{
+        Get.defaultDialog(title: 'Error',content: Text('you enter wrong value , please check again'));
+      }
+
+    }
+  }
+
+
+
+  add_door(Door_Model door_model){
+
+    if(door_model.single_door){
+      add_single_Door(door_model);
+    }else{
+      add_double_Door( door_model);
+    }
+
+  }
+  add_single_Door(Door_Model door_model)
+  {
+
+
+    double out_width_of_inner=box_pieces[door_model.inner_id].Piece_width+
+        box_pieces[box_pieces[door_model.inner_id].piece_faces.left_face.face_item.first].Piece_thickness*door_model.left_over_lap+
+        box_pieces[box_pieces[door_model.inner_id].piece_faces.right_face.face_item.first].Piece_thickness*door_model.right_over_lap
+    ;
+
+    double out_hight_of_inner=box_pieces[door_model.inner_id].Piece_height+
+        box_pieces[box_pieces[door_model.inner_id].piece_faces.top_face.face_item.first].Piece_thickness*door_model.up_over_lap+
+        box_pieces[box_pieces[door_model.inner_id].piece_faces.base_face.face_item.first].Piece_thickness*door_model.down_over_lap
+    ;
+
+
+    Single_Face new_door_top_face   = box_pieces[door_model.inner_id].piece_faces.top_face;
+    Single_Face new_door_right_face = box_pieces[door_model.inner_id].piece_faces.right_face;
+    Single_Face new_door_base_face  = box_pieces[door_model.inner_id].piece_faces.base_face;
+    Single_Face new_door_left_face  = box_pieces[door_model.inner_id].piece_faces.left_face;
+    Single_Face new_door_front_face = Single_Face([1], [], []);
+    Single_Face new_door_back_face  = Single_Face([0], [], []);
+
+    Face_model new_piece_faces = Face_model(
+       new_door_top_face  ,
+       new_door_right_face,
+       new_door_base_face ,
+       new_door_left_face ,
+       new_door_front_face,
+       new_door_back_face );
+
+    Piece_model new_door = Piece_model(
+      // new_piece_id,
+        'Door',
+        'F',
+        'material_name',
+        out_width_of_inner-door_model.round_gap*2,
+        out_hight_of_inner-door_model.round_gap*2,
+        material_thickness,
+        Point_model(
+            box_pieces[door_model.inner_id].piece_origin.x_coordinate-(box_pieces[box_pieces[door_model.inner_id]
+                .piece_faces.left_face.face_item.first].Piece_thickness)*door_model.left_over_lap+door_model.round_gap,
+            box_pieces[door_model.inner_id].piece_origin.y_coordinate-(box_pieces[box_pieces[door_model.inner_id]
+                .piece_faces.base_face.face_item.first].Piece_thickness)*door_model.down_over_lap +door_model.round_gap,
+            box_pieces[door_model.inner_id].piece_origin.z_coordinate),
+        new_piece_faces);
+
+    box_pieces.add(new_door);
+
+  }
+
+  add_double_Door(Door_Model door_model)
+  {
+
+    double out_width_of_inner=box_pieces[door_model.inner_id].Piece_width+
+        box_pieces[box_pieces[door_model.inner_id].piece_faces.left_face.face_item.first].Piece_thickness*door_model.left_over_lap+
+        box_pieces[box_pieces[door_model.inner_id].piece_faces.right_face.face_item.first].Piece_thickness*door_model.right_over_lap
+    ;
+
+    double out_hight_of_inner=box_pieces[door_model.inner_id].Piece_height+
+        box_pieces[box_pieces[door_model.inner_id].piece_faces.top_face.face_item.first].Piece_thickness*door_model.up_over_lap+
+        box_pieces[box_pieces[door_model.inner_id].piece_faces.base_face.face_item.first].Piece_thickness*door_model.down_over_lap
+    ;
+
+
+    int left_door_id=box_pieces.length+1;
+    int right_door_id=box_pieces.length+2;
+
+
+    Single_Face left_door_top_face   = box_pieces[door_model.inner_id].piece_faces.top_face;
+    Single_Face left_door_right_face = Single_Face([right_door_id], [], []);
+    Single_Face left_door_base_face  = box_pieces[door_model.inner_id].piece_faces.base_face;
+    Single_Face left_door_left_face  = box_pieces[door_model.inner_id].piece_faces.left_face;
+    Single_Face left_door_front_face = Single_Face([1], [], []);
+    Single_Face left_door_back_face  = Single_Face([0], [], []);
+
+
+    Face_model left_door_faces = Face_model(
+        left_door_top_face   ,
+        left_door_right_face ,
+        left_door_base_face  ,
+        left_door_left_face  ,
+        left_door_front_face ,
+        left_door_back_face  ,
+    );
+
+
+    Piece_model left_door = Piece_model(
+      // new_piece_id,
+        'Door',
+        'F',
+        'material_name',
+        out_width_of_inner/2-door_model.round_gap*2,
+        out_hight_of_inner-door_model.round_gap*2,
+        material_thickness,
+        Point_model(
+            box_pieces[door_model.inner_id].piece_origin.x_coordinate-(box_pieces[box_pieces[door_model.inner_id].piece_faces.left_face.face_item.first].
+            Piece_thickness)*door_model.left_over_lap+door_model.round_gap,
+            box_pieces[door_model.inner_id].piece_origin.y_coordinate-(box_pieces[box_pieces[door_model.inner_id].piece_faces.base_face.face_item.first].
+            Piece_thickness)*door_model.down_over_lap +door_model.round_gap,
+            box_pieces[door_model.inner_id].piece_origin.z_coordinate),
+        left_door_faces);
+
+    box_pieces.add(left_door);
+
+
+
+    /// RIGHT DOOR
+    Single_Face right_door_top_face   = box_pieces[door_model.inner_id].piece_faces.top_face;
+    Single_Face right_door_right_face = box_pieces[door_model.inner_id].piece_faces.right_face;
+    Single_Face right_door_base_face  = box_pieces[door_model.inner_id].piece_faces.base_face;
+    Single_Face right_door_left_face  =  Single_Face([left_door_id], [], []);
+    Single_Face right_door_front_face = Single_Face([1], [], []);
+    Single_Face right_door_back_face  = Single_Face([0], [], []);
+
+    Face_model right_door_faces = Face_model(
+      right_door_top_face   ,
+      right_door_right_face ,
+      right_door_base_face  ,
+      right_door_left_face  ,
+      right_door_front_face ,
+      right_door_back_face  ,
+    );
+
+    Piece_model right_door = Piece_model(
+      // new_piece_id,
+        'Door',
+        'F',
+        'material_name',
+        out_width_of_inner/2-door_model.round_gap*2,
+        out_hight_of_inner-door_model.round_gap*2,
+        material_thickness,
+        Point_model(
+            box_pieces[door_model.inner_id].piece_origin.x_coordinate-(box_pieces[box_pieces[door_model.inner_id].piece_faces.left_face.face_item.first].
+            Piece_thickness)+out_width_of_inner/2+door_model.round_gap,
+            box_pieces[door_model.inner_id].piece_origin.y_coordinate-(box_pieces[box_pieces[door_model.inner_id].piece_faces.base_face.face_item.first].
+            Piece_thickness) +door_model.round_gap,
+            box_pieces[door_model.inner_id].piece_origin.z_coordinate),
+        right_door_faces);
+
+    box_pieces.add(right_door);
+
+
+
+  }
+
+
 
   Add_Drawer() {}
 
-  Add_Door() {}
+
 }
