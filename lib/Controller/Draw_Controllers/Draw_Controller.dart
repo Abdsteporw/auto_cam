@@ -165,15 +165,20 @@ class Draw_Controller extends GetxController {
   print_pieces_coordinate() {
 
     for (int i = 0; i < box_repository.box_model.value.box_pieces.length; i++) {
-      print(' piece id :${i}');
-      print(' piece name  :${box_repository.box_model.value.box_pieces[i].piece_name}');
+      print('index : $i;; piece id :${box_repository.box_model.value.box_pieces[i].piece_id} ;; name  :${box_repository.box_model.value.box_pieces[i].piece_name}');
+      print('height :  ${box_repository.box_model.value.box_pieces[i].Piece_height} ;;'
+          ' width :  ${box_repository.box_model.value.box_pieces[i].Piece_width}');
+      print('thickness :  ${box_repository.box_model.value.box_pieces[i].Piece_thickness}');
 
-      print('p L D : X${box_repository.box_model.value.box_pieces[i].cordinate_3d.xy_0_plane[0].x_coordinate} , Y:${box_repository.box_model.value.box_pieces[i].cordinate_3d.xy_0_plane[0].y_coordinate}');
-      print('p L U : X${box_repository.box_model.value.box_pieces[i].cordinate_3d.xy_0_plane[1].x_coordinate} , Y:${box_repository.box_model.value.box_pieces[i].cordinate_3d.xy_0_plane[1].y_coordinate}');
-      print('p R U : X${box_repository.box_model.value.box_pieces[i].cordinate_3d.xy_0_plane[2].x_coordinate} , Y:${box_repository.box_model.value.box_pieces[i].cordinate_3d.xy_0_plane[2].y_coordinate}');
-      print('p R D : X${box_repository.box_model.value.box_pieces[i].cordinate_3d.xy_0_plane[3].x_coordinate} , Y:${box_repository.box_model.value.box_pieces[i].cordinate_3d.xy_0_plane[3].y_coordinate}');
-      print('height :  ${box_repository.box_model.value.box_pieces[i].Piece_height}');
-      print('width :  ${box_repository.box_model.value.box_pieces[i].Piece_width}');
+      box_repository.box_model.value.box_pieces[i].piece_faces.top_face.face_item.forEach((element) {print('top   : $element');});
+      print('---------');
+      box_repository.box_model.value.box_pieces[i].piece_faces.right_face.face_item.forEach((element) {print('right : $element');});
+      print('---------');
+      box_repository.box_model.value.box_pieces[i].piece_faces.base_face .face_item.forEach((element) {print('base  : $element');});
+      print('---------');
+      box_repository.box_model.value.box_pieces[i].piece_faces.left_face .face_item.forEach((element) {print('left  : $element');});
+      print('---------');
+
       print('=============');
     }
   }

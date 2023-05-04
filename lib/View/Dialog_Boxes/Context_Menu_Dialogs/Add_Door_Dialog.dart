@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:auto_cam/Controller/Draw_Controllers/Draw_Controller.dart';
 import 'package:auto_cam/Model/Main_Models/Door_Model.dart';
 import 'package:flutter/material.dart';
@@ -298,7 +300,12 @@ class _Add_Door_DialogState extends State<Add_Door_Dialog> {
 
                 Row(
                   children: [
-                    Checkbox(value: true, onChanged: (_) {}),
+                    Checkbox(value: single_door, onChanged: (_) {
+                      single_door=!single_door;
+                      setState(() {
+
+                      });
+                    }),
                     Text('Single Door'),
                     SizedBox(
                       width: 4,
@@ -310,7 +317,12 @@ class _Add_Door_DialogState extends State<Add_Door_Dialog> {
                 ),
                 Row(
                   children: [
-                    Checkbox(value: true, onChanged: (_) {}),
+                    Checkbox(value: !single_door, onChanged: (_) {
+                      single_door=!single_door;
+                      setState(() {
+
+                      });
+                    }),
                     Text('Double Door'),
                     SizedBox(
                       width: 4,
@@ -418,6 +430,8 @@ class _Add_Door_DialogState extends State<Add_Door_Dialog> {
                            double.parse(round_gap_controller.text.toString()),
                            up_over_lap, right_over_lap, down_over_lap, left_over_lap);
                        draw_controller.add_door(door_model);
+                       Navigator.of(Get.overlayContext!).pop();
+
                       },
                       child: Container(
                         width: 80,

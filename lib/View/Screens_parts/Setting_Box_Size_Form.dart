@@ -41,7 +41,7 @@ class _Setting_Box_Size_FormState extends State<Setting_Box_Size_Form> {
     width_controller.text=               box_model.box_width.toString();
     hight_controller.text=               box_model.box_height.toString();
     depth_controller.text=               box_model.box_depth.toString();
-    material_thickness_controller.text=  box_model.material_thickness.toString();
+    material_thickness_controller.text=  box_model.init_material_thickness.toString();
     back_panel_thickness_controller.text=box_model.backpanel_thickness.toString();
 
 
@@ -516,7 +516,9 @@ class _Setting_Box_Size_FormState extends State<Setting_Box_Size_Form> {
                   width: 18,
                 ),
                 InkWell(
-                    onTap: () {},
+                    onTap: () {
+                      draw_Controller.print_pieces_coordinate();
+                    },
                     child: Icon(
                       Icons.margin_outlined,
                       size: 36,
@@ -547,7 +549,10 @@ class _Setting_Box_Size_FormState extends State<Setting_Box_Size_Form> {
                   width: 18,
                 ),
                 InkWell(
-                    onTap: () {},
+                    onTap: () {
+                      draw_Controller.box_repository.box_model.value.pieces_id;
+                      print(                      draw_Controller.box_repository.box_model.value.pieces_id);
+                    },
                     child: Icon(
                       Icons.code,
                       size: 36,

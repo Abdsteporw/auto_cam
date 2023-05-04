@@ -9,6 +9,6 @@ class Door_Model{
   late double down_over_lap;
   late double left_over_lap;
 
-  Door_Model(this.single_door,this.round_gap,this.material_thickness, this.up_over_lap, this.right_over_lap,
+  Door_Model(this.single_door,this.material_thickness,this.round_gap, this.up_over_lap, this.right_over_lap,
       this.down_over_lap, this.left_over_lap);
 }
