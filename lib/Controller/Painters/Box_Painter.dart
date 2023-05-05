@@ -101,8 +101,8 @@ bool inner=(piece_model.piece_name=='inner');
 
       draw_text(
           canvas,
-          // 'i:${i}-id:${piece_model.piece_id}-${piece_model.piece_name}',
-          '${piece_model.piece_id}',
+          'i:${i}-id:${piece_model.piece_id}-${piece_model.piece_name}',
+          // '${piece_model.piece_id}',
           Offset(
               piece_model.piece_center.x_coordinate * drawing_scale +
                   box_model.box_origin.x_coordinate -

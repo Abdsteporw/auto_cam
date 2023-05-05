@@ -425,9 +425,10 @@ class _Add_Door_DialogState extends State<Add_Door_Dialog> {
                     ),
                     InkWell(
                       onTap: () {
+
                        Door_Model door_model=Door_Model(single_door,
                            double.parse(material_controller.text.toString()),
-                           double.parse(round_gap_controller.text.toString()),
+                           double.parse(round_gap_controller.text.toString()),draw_controller.hover_id,
                            up_over_lap, right_over_lap, down_over_lap, left_over_lap);
                        draw_controller.add_door(door_model);
                        Navigator.of(Get.overlayContext!).pop();
