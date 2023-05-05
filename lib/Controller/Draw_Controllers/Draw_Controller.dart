@@ -110,7 +110,7 @@ class Draw_Controller extends GetxController {
   add_partition(
       double top_Distence, double frontage_Gap, double material_thickness,int quantity)
   {
-    box_repository.box_model.value.add_partation(hover_id, top_Distence, frontage_Gap, material_thickness,quantity);
+    box_repository.box_model.value.add_Partition(hover_id, top_Distence, frontage_Gap, material_thickness,quantity);
     print_pieces_coordinate();
 
   }

@@ -30,13 +30,14 @@ class _Add_Partition_DialogState extends State<Add_Partition_Dialog> {
   bool proportional = false;
   bool edit_enable = true;
 
-  top_changed() {
+  left_changed() {
     double double_left_distance;
     if (distance) {
       if (Left_Distance.text.toString() != '') {
         double_left_distance = double.parse(Left_Distance.text.toString());
         Right_Distance.text =
-        '${drawerController.box_repository.box_model.value.box_pieces[drawerController.hover_id].Piece_width
+        '${drawerController.box_repository.box_model.value.
+        box_pieces[drawerController.hover_id].Piece_width
             - double_left_distance}';
       }
     } else if (proportional) {
@@ -49,7 +50,7 @@ class _Add_Partition_DialogState extends State<Add_Partition_Dialog> {
     setState(() {});
   }
 
-  bottom_changed() {
+  right_changed() {
     double double_right_distance;
     if (distance) {
       if (Right_Distance.text.toString() != '') {
@@ -113,6 +114,10 @@ class _Add_Partition_DialogState extends State<Add_Partition_Dialog> {
   }
 
   partition_center_change() {
+    Quantity.text='1';
+    Material.text='${drawerController.box_repository.box_model.
+    value.init_material_thickness}';
+    Front_Gap.text='24';
     if (!partition_center) {
       partition_center = true;
       distance = false;
@@ -329,14 +334,8 @@ class _Add_Partition_DialogState extends State<Add_Partition_Dialog> {
                         child: Checkbox(
                           value: partition_center,
                           onChanged: (bool? value) {
-                            if (double.parse(Quantity.text.toString()) == 1) {
                               partition_center_change();
-                            } else {
-                              Get.defaultDialog(
-                                  title: 'ERROR',
-                                  content:
-                                  Text('the quantity bigger than 1 !!'));
-                            }
+
                           },
                         )),
                     Container(
@@ -415,7 +414,7 @@ class _Add_Partition_DialogState extends State<Add_Partition_Dialog> {
                       height: 40,
                       child: TextFormField(
                         onChanged: (_) {
-                          top_changed();
+                          left_changed();
                         },
                         enabled: (quantity && edit_enable),
                         inputFormatters: [
@@ -453,7 +452,7 @@ class _Add_Partition_DialogState extends State<Add_Partition_Dialog> {
                       height: 40,
                       child: TextFormField(
                         onChanged: (_) {
-                          bottom_changed();
+                          right_changed();
                         },
                         enabled: (quantity && edit_enable),
                         inputFormatters: [

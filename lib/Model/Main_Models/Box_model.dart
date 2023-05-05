@@ -246,7 +246,7 @@ class Box_model {
     box_pieces.add(back_panel_piece);
   }
 
-  add_Shelf_pattern(int inner, double top_Distence, double frontage_Gap,
+add_Shelf_pattern(int inner, double top_Distence, double frontage_Gap,
       double shelf_material_thickness) {
     double down_Distence = box_pieces[inner].Piece_height -
         top_Distence -
@@ -344,6 +344,8 @@ class Box_model {
         new_piece_faces);
     pieces_id++;
 
+    /// EDIT ALL SIDES
+    /// 1-RIGHT
     ///edit right side
 
     int right_side_id=box_pieces[inner].piece_faces.right_face.face_item.first;
@@ -376,10 +378,9 @@ class Box_model {
         )
     );
     ///
-    ///
-    ///
 
-    ///
+
+    /// 2_LEFT
     ///edit left side
 
     int left_side_id=box_pieces[inner].piece_faces.left_face.face_item.first;
@@ -417,17 +418,97 @@ class Box_model {
     );
     ///
     ///
+    /// 3_TOP
+    ///edit top side
+
+    int top_side_id=box_pieces[inner].piece_faces.top_face.face_item.first;
+    Piece_model top_side_piece=box_pieces.where((element) => element.piece_id==top_side_id).first;
+
+    List<int> top_side_new_base_face_items=[];
+
+    for(int i=0;i<top_side_piece.piece_faces.base_face.face_item.length;i++){
+
+      if(top_side_piece.piece_faces.base_face.face_item[i]==box_pieces[inner].piece_id){
+        top_side_new_base_face_items.add(old_inner_id);
+      }else{
+        top_side_new_base_face_items.add(top_side_piece.piece_faces.base_face.face_item[i]);
+      }
+    }
+    Piece_model top_piece_new=Piece_model(
+        top_side_piece.piece_id,
+        top_side_piece.piece_name,
+        top_side_piece.piece_direction,
+        top_side_piece.material_name,
+        top_side_piece.Piece_width,
+        top_side_piece.Piece_height,
+        top_side_piece.Piece_thickness,
+        top_side_piece.piece_origin,
+        Face_model(
+            top_side_piece.piece_faces.top_face,
+            top_side_piece.piece_faces.right_face,
+            Single_Face(top_side_new_base_face_items,[],[]),
+            top_side_piece.piece_faces.left_face,
+            top_side_piece.piece_faces.front_face,
+            top_side_piece.piece_faces.back_face
+        )
+    );
+    ///
+    ///
+
+    /// 4_BASE
+    ///edit base side
+
+    int base_side_id=box_pieces[inner].piece_faces.base_face.face_item.first;
+    Piece_model base_side_piece=box_pieces.where((element) => element.piece_id==base_side_id).first;
+
+    List<int> base_side_new_base_face_items=[];
+
+    for(int i=0;i<base_side_piece.piece_faces.top_face.face_item.length;i++){
+
+      if(base_side_piece.piece_faces.top_face.face_item[i]==box_pieces[inner].piece_id){
+        base_side_new_base_face_items.add(new_inner_id);
+      }else{
+        base_side_new_base_face_items.add(base_side_piece.piece_faces.top_face.face_item[i]);
+      }
+    }
+    Piece_model base_piece_new=Piece_model(
+        base_side_piece.piece_id,
+        base_side_piece.piece_name,
+        base_side_piece.piece_direction,
+        base_side_piece.material_name,
+        base_side_piece.Piece_width,
+        base_side_piece.Piece_height,
+        base_side_piece.Piece_thickness,
+        base_side_piece.piece_origin,
+        Face_model(
+            Single_Face(base_side_new_base_face_items,[],[]),
+            base_side_piece.piece_faces.right_face,
+            base_side_piece.piece_faces.base_face,
+            base_side_piece.piece_faces.left_face,
+            base_side_piece.piece_faces.front_face,
+            base_side_piece.piece_faces.back_face
+        )
+    );
+    ///
+    ///
+
 
     box_pieces.remove(box_pieces[inner]);
 
     box_pieces.removeWhere((element) => element.piece_id==left_side_id);
     box_pieces.removeWhere((element) => element.piece_id==right_side_id);
+    box_pieces.removeWhere((element) => element.piece_id==top_side_id);
+    box_pieces.removeWhere((element) => element.piece_id==base_side_id);
 
     box_pieces.add(old_inner);
     box_pieces.add(new_piece);
-    box_pieces.add(new_inner);
     box_pieces.add(right_piece_new);
     box_pieces.add(left_piece_new);
+    box_pieces.add(top_piece_new);
+    box_pieces.add(base_piece_new);
+
+    box_pieces.add(new_inner);
+
   }
 
   add_Shelf(int inner, double top_Distence, double frontage_Gap,
@@ -450,16 +531,12 @@ class Box_model {
                 Quantity * shelf_material_thickness) /
             (Quantity + 1);
 
-        for (int i = 0; i < Quantity; i++) {
-          if (i == 0)
-            add_Shelf_pattern(inner, distance, frontage_Gap, shelf_material_thickness);
-          else {
-            add_Shelf_pattern(inner + i, distance, frontage_Gap, shelf_material_thickness);
+        add_Shelf_pattern(inner, distance, frontage_Gap, shelf_material_thickness);
 
-
-
+        for (int i = 1; i < Quantity; i++) {
+            add_Shelf_pattern(box_pieces.length-1, distance, frontage_Gap, shelf_material_thickness);
           }
-        }
+
 
         Navigator.of(Get.overlayContext!).pop();
       } else {
@@ -470,8 +547,9 @@ class Box_model {
     }
   }
 
-  /// Partition
-  add_partition_pattern(int inner, double left_Distence, double frontage_Gap,
+  ///start Partition
+
+  add_Partition_pattern(int inner, double left_Distence, double frontage_Gap,
       double partition_material_thickness) {
     double right_Distence = box_pieces[inner].Piece_width -
         left_Distence -
@@ -479,11 +557,18 @@ class Box_model {
 
     double depth_of_partition = box_depth - 24 - frontage_Gap;
 
-    int id_reference = box_pieces.length - 1;
-    int new_piece_id = id_reference + 1;
-    int new_inner_id = id_reference + 2;
+    int old_inner_id = pieces_id;
+    int new_inner_id = pieces_id + 1;
+    int new_piece_id = pieces_id + 2;
 
-    Face_model old_inner_face = box_pieces[inner].piece_faces;
+    Face_model old_inner_faces = Face_model(
+      Single_Face([box_pieces[inner].piece_faces.top_face.face_item.first], [], []),
+      Single_Face([new_piece_id], [], []),
+      Single_Face([box_pieces[inner].piece_faces.base_face.face_item.first], [], []),
+      Single_Face([box_pieces[inner].piece_faces.left_face.face_item.first], [], []),
+      Single_Face([], [], []),
+      Single_Face([], [], []),
+    );
 
     Piece_model old_inner = Piece_model(
         pieces_id,
@@ -492,37 +577,47 @@ class Box_model {
         'inner',
         left_Distence,
         box_pieces[inner].Piece_height,
-        10,
+        1,
         Point_model(
             box_pieces[inner].piece_origin.x_coordinate,
             box_pieces[inner].piece_origin.y_coordinate,
             box_pieces[inner].piece_origin.z_coordinate),
-        old_inner_face);
+        old_inner_faces);
     pieces_id++;
+
+    Face_model new_inner_faces = Face_model(
+      Single_Face([box_pieces[inner].piece_faces.top_face.face_item.first], [], []),
+      Single_Face([box_pieces[inner].piece_faces.right_face.face_item.first], [], []),
+      Single_Face([box_pieces[inner].piece_faces.base_face.face_item.first], [], []),
+      Single_Face([new_piece_id], [], []),
+      Single_Face([], [], []),
+      Single_Face([], [], []),
+    );
 
     Piece_model new_inner = Piece_model(
         pieces_id,
         'inner',
         'F',
         'inner',
-        left_Distence,
+        right_Distence,
         box_pieces[inner].Piece_height,
         10,
         Point_model(
-            box_pieces[inner].piece_origin.x_coordinate +
-                left_Distence +
-                partition_material_thickness,
+            box_pieces[inner].piece_origin.x_coordinate
+            +left_Distence+partition_material_thickness,
             box_pieces[inner].piece_origin.y_coordinate,
             box_pieces[inner].piece_origin.z_coordinate),
-        old_inner_face);
+        new_inner_faces);
     pieces_id++;
 
-    Single_Face new_Piece_top_face = box_pieces[inner].piece_faces.top_face;
-    Single_Face new_Piece_right_face = Single_Face([id_reference], [], []);
-    Single_Face new_Piece_base_face = box_pieces[inner].piece_faces.base_face;
-    Single_Face new_Piece_left_face = Single_Face([new_inner_id], [], []);
-    Single_Face new_Piece_front_face = Single_Face([1], [], []);
-    Single_Face new_Piece_back_face = Single_Face([0], [], []);
+
+
+    Single_Face  new_Piece_top_face   = box_pieces[inner].piece_faces.top_face;
+    Single_Face  new_Piece_right_face  = Single_Face([new_inner_id], [], []);
+    Single_Face  new_Piece_base_face  = box_pieces[inner].piece_faces.base_face;
+    Single_Face  new_Piece_left_face  = Single_Face([old_inner_id], [], []);
+    Single_Face  new_Piece_front_face = Single_Face([0], [], []);
+    Single_Face  new_Piece_back_face = Single_Face([0], [], []);
 
     Face_model new_piece_faces = Face_model(
         new_Piece_top_face,
@@ -530,39 +625,198 @@ class Box_model {
         new_Piece_base_face,
         new_Piece_left_face,
         new_Piece_front_face,
-        new_Piece_back_face);
+        new_Piece_back_face
+    );
 
     Piece_model new_piece = Piece_model(
         pieces_id,
-        'new partition',
+        'partition',
         'V',
         'material_name',
         depth_of_partition,
         box_pieces[inner].Piece_height,
         partition_material_thickness,
         Point_model(
-            box_pieces[inner].piece_origin.x_coordinate + left_Distence,
-            box_pieces[inner].piece_origin.y_coordinate,
+            box_pieces[inner].piece_origin.x_coordinate+left_Distence,
+            box_pieces[inner].piece_origin.y_coordinate ,
             box_pieces[inner].piece_origin.z_coordinate),
         new_piece_faces);
-
     pieces_id++;
 
-    box_pieces.removeAt(inner);
+    /// EDIT ALL SIDES
+    /// 1-RIGHT
+    ///edit right side
+
+    int right_side_id=box_pieces[inner].piece_faces.right_face.face_item.first;
+    Piece_model right_side_piece=box_pieces.where((element) => element.piece_id==right_side_id).first;
+
+    List<int> right_side_new_left_face_items=[];
+
+    for(int i=0;i<right_side_piece.piece_faces.left_face.face_item.length;i++){
+
+      if(right_side_piece.piece_faces.left_face.face_item[i]==box_pieces[inner].piece_id){
+        right_side_new_left_face_items.add(new_inner_id);
+      }else{
+        right_side_new_left_face_items.add(right_side_piece.piece_faces.left_face.face_item[i]);
+      }
+    }
+    Piece_model right_piece_new=Piece_model(right_side_piece.piece_id,
+        right_side_piece.piece_name,        right_side_piece.piece_direction,
+        right_side_piece.material_name,     right_side_piece.Piece_width,
+        right_side_piece.Piece_height,      right_side_piece.Piece_thickness,
+        right_side_piece.piece_origin,
+        Face_model(
+            right_side_piece.piece_faces.top_face,
+            right_side_piece.piece_faces.right_face,
+            right_side_piece.piece_faces.base_face,
+            Single_Face(right_side_new_left_face_items,[],[]),
+            right_side_piece.piece_faces.front_face,
+            right_side_piece.piece_faces.back_face
+        )
+    );
+    ///
+
+
+    /// 2_LEFT
+    ///edit left side
+
+    int left_side_id=box_pieces[inner].piece_faces.left_face.face_item.first;
+    Piece_model left_side_piece=box_pieces.where((element) => element.piece_id==left_side_id).first;
+
+    List<int> left_side_new_right_face_items=[];
+
+    for(int i=0;i<left_side_piece.piece_faces.right_face.face_item.length;i++){
+
+      if(left_side_piece.piece_faces.right_face.face_item[i]==box_pieces[inner].piece_id){
+        left_side_new_right_face_items.add(old_inner_id);
+      }else{
+        left_side_new_right_face_items.add(left_side_piece.piece_faces.right_face.face_item[i]);
+      }
+    }
+    Piece_model left_piece_new=Piece_model(
+        left_side_piece.piece_id,
+        left_side_piece.piece_name,
+        left_side_piece.piece_direction,
+        left_side_piece.material_name,
+        left_side_piece.Piece_width,
+        left_side_piece.Piece_height,
+        left_side_piece.Piece_thickness,
+        left_side_piece.piece_origin,
+        Face_model(
+            left_side_piece.piece_faces.top_face,
+            Single_Face(left_side_new_right_face_items,[],[]),
+            left_side_piece.piece_faces.base_face,
+            left_side_piece.piece_faces.left_face,
+            left_side_piece.piece_faces.front_face,
+            left_side_piece.piece_faces.back_face
+        )
+    );
+    ///
+    ///
+    /// 3_TOP
+    ///edit top side
+
+    int top_side_id=box_pieces[inner].piece_faces.top_face.face_item.first;
+    Piece_model top_side_piece=box_pieces.where((element) => element.piece_id==top_side_id).first;
+
+    List<int> top_side_new_base_face_items=[];
+
+    for(int i=0;i<top_side_piece.piece_faces.base_face.face_item.length;i++){
+
+      if(top_side_piece.piece_faces.base_face.face_item[i]==box_pieces[inner].piece_id){
+
+        top_side_new_base_face_items.add(old_inner_id);
+        top_side_new_base_face_items.add(new_piece_id);
+        top_side_new_base_face_items.add(new_inner_id);
+
+      }else{
+        top_side_new_base_face_items.add(top_side_piece.piece_faces.base_face.face_item[i]);
+      }
+    }
+    Piece_model top_piece_new=Piece_model(
+        top_side_piece.piece_id,
+        top_side_piece.piece_name,
+        top_side_piece.piece_direction,
+        top_side_piece.material_name,
+        top_side_piece.Piece_width,
+        top_side_piece.Piece_height,
+        top_side_piece.Piece_thickness,
+        top_side_piece.piece_origin,
+        Face_model(
+            top_side_piece.piece_faces.top_face,
+            top_side_piece.piece_faces.right_face,
+            Single_Face(top_side_new_base_face_items,[],[]),
+            top_side_piece.piece_faces.left_face,
+            top_side_piece.piece_faces.front_face,
+            top_side_piece.piece_faces.back_face
+        )
+    );
+    ///
+    ///
+
+    /// 4_BASE
+    ///edit base side
+
+    int base_side_id=box_pieces[inner].piece_faces.base_face.face_item.first;
+    Piece_model base_side_piece=box_pieces.where((element) => element.piece_id==base_side_id).first;
+
+    List<int> base_side_new_base_face_items=[];
+
+    for(int i=0;i<base_side_piece.piece_faces.top_face.face_item.length;i++){
+
+      if(base_side_piece.piece_faces.top_face.face_item[i]==box_pieces[inner].piece_id){
+        base_side_new_base_face_items.add(old_inner_id);
+        base_side_new_base_face_items.add(new_piece_id);
+        base_side_new_base_face_items.add(new_inner_id);
+      }else{
+        base_side_new_base_face_items.add(base_side_piece.piece_faces.top_face.face_item[i]);
+      }
+    }
+    Piece_model base_piece_new=Piece_model(
+        base_side_piece.piece_id,
+        base_side_piece.piece_name,
+        base_side_piece.piece_direction,
+        base_side_piece.material_name,
+        base_side_piece.Piece_width,
+        base_side_piece.Piece_height,
+        base_side_piece.Piece_thickness,
+        base_side_piece.piece_origin,
+        Face_model(
+            Single_Face(base_side_new_base_face_items,[],[]),
+            base_side_piece.piece_faces.right_face,
+            base_side_piece.piece_faces.base_face,
+            base_side_piece.piece_faces.left_face,
+            base_side_piece.piece_faces.front_face,
+            base_side_piece.piece_faces.back_face
+        )
+    );
+    ///
+    ///
+
+
+    box_pieces.remove(box_pieces[inner]);
+
+    box_pieces.removeWhere((element) => element.piece_id==left_side_id);
+    box_pieces.removeWhere((element) => element.piece_id==right_side_id);
+    box_pieces.removeWhere((element) => element.piece_id==top_side_id);
+    box_pieces.removeWhere((element) => element.piece_id==base_side_id);
 
     box_pieces.add(old_inner);
     box_pieces.add(new_piece);
+    box_pieces.add(right_piece_new);
+    box_pieces.add(left_piece_new);
+    box_pieces.add(top_piece_new);
+    box_pieces.add(base_piece_new);
+
     box_pieces.add(new_inner);
 
-    old_inner.piece_faces.base_face = Single_Face([new_piece_id], [], []);
-    new_inner.piece_faces.top_face = Single_Face([new_piece_id], [], []);
   }
 
-  add_partation(int inner, double left_Distence, double frontage_Gap,
+  add_Partition(int inner, double left_Distence, double frontage_Gap,
       double partition_material_thickness, int Quantity) {
     if (Quantity == 1) {
       if (box_pieces[inner].Piece_width > left_Distence && left_Distence > 0) {
-        add_partition_pattern(
+        add_Partition_pattern(
             inner, left_Distence, frontage_Gap, partition_material_thickness);
         Navigator.of(Get.overlayContext!).pop();
       } else {
@@ -572,20 +826,19 @@ class Box_model {
       }
     } else {
       if (((Quantity - 1) * left_Distence +
-              Quantity * partition_material_thickness) <
+          Quantity * partition_material_thickness) <
           box_pieces[inner].Piece_width) {
         double distance = (box_pieces[inner].Piece_width -
-                Quantity * partition_material_thickness) /
+            Quantity * partition_material_thickness) /
             (Quantity + 1);
 
-        for (int i = 0; i < Quantity; i++) {
-          if (i == 0)
-            add_partition_pattern(
-                inner, distance, frontage_Gap, partition_material_thickness);
-          else
-            add_partition_pattern(box_pieces.length - 1, distance, frontage_Gap,
-                partition_material_thickness);
+        add_Partition_pattern(inner, distance, frontage_Gap, partition_material_thickness);
+
+        for (int i = 1; i < Quantity; i++) {
+          add_Partition_pattern(box_pieces.length-1, distance, frontage_Gap, partition_material_thickness);
         }
+
+
         Navigator.of(Get.overlayContext!).pop();
       } else {
         Get.defaultDialog(
@@ -594,6 +847,11 @@ class Box_model {
       }
     }
   }
+
+
+
+
+  /// end partition
 
   add_door(Door_Model door_model) {
     if (door_model.single_door) {

@@ -98,9 +98,11 @@ class Box_Painter extends CustomPainter {
           canvas.drawPath(path, line_painter);
       }
 bool inner=(piece_model.piece_name=='inner');
+
       draw_text(
           canvas,
-          'i:${i}-id:${piece_model.piece_id}-${piece_model.piece_name}',
+          // 'i:${i}-id:${piece_model.piece_id}-${piece_model.piece_name}',
+          '${piece_model.piece_id}',
           Offset(
               piece_model.piece_center.x_coordinate * drawing_scale +
                   box_model.box_origin.x_coordinate -
@@ -111,13 +113,14 @@ bool inner=(piece_model.piece_name=='inner');
     box_model.box_origin.y_coordinate -
     piece_model.piece_center.y_coordinate * drawing_scale -
     11 * drawing_scale)),
-          16 * drawing_scale);
+          16 * drawing_scale,
+          (i == hover_id)?15:7);
     }
   }
 
-  draw_text(Canvas c, String text, Offset offset, double t_size) {
+  draw_text(Canvas c, String text, Offset offset, double t_size , int my_text_size) {
     TextSpan ts = TextSpan(
-        text: text, style: TextStyle(fontSize: t_size, color: Colors.black));
+        text: text, style: TextStyle(fontSize: t_size/10*my_text_size, color: Colors.black));
     TextPainter tp = TextPainter(text: ts, textDirection: TextDirection.ltr);
     tp.layout();
 
