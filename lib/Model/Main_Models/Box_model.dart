@@ -1,4 +1,5 @@
 import 'package:auto_cam/Model/Main_Models/Door_Model.dart';
+import 'package:auto_cam/Model/Main_Models/Drawer_model.dart';
 import 'package:auto_cam/Model/Main_Models/Face_model.dart';
 import 'package:auto_cam/Model/Main_Models/Piece_model.dart';
 import 'package:auto_cam/Model/Main_Models/Point_model.dart';
@@ -14,7 +15,7 @@ class Box_model {
   late double backpanel_thickness;
   late Point_model box_origin;
   late List<Piece_model> box_pieces;
-
+late List<Drawer_model> box_drawers;
   int pieces_id = 1;
 
   Box_model(this.box_width, this.box_height, this.box_depth,
@@ -22,7 +23,7 @@ class Box_model {
     box_id = 0;
     box_origin = Point_model(0, 0, 0);
     ////////////////////////////////////////////////////////////////////////////
-
+    box_drawers=[];
     /// we need to define the id of initiate pieces
     /// note : we consider the main inner or inner area has the id of back panel
     /// and it will always like this , the different id for inner will be for new inners

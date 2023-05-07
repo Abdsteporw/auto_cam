@@ -5,6 +5,7 @@ import 'package:auto_cam/Controller/Repositories_Controllers/Box_Repository.dart
 import 'package:auto_cam/Model/Main_Models/Box_model.dart';
 import 'package:auto_cam/Model/Main_Models/Coordinate_3D.dart';
 import 'package:auto_cam/Model/Main_Models/Door_Model.dart';
+import 'package:auto_cam/Model/Main_Models/Drawer_model.dart';
 import 'package:auto_cam/Model/Main_Models/Piece_model.dart';
 import 'package:auto_cam/Model/Main_Models/Point_model.dart';
 import 'package:auto_cam/View/Dialog_Boxes/Context_Menu_Dialogs/Main_Edit_Dialog.dart';
@@ -160,6 +161,75 @@ class Draw_Controller extends GetxController {
     box_repository.box_model.value.add_door(door_model);
   }
 
+  add_drawer_pattern(
+      double inner_height,
+      double double_drawer_box_material_thickness,
+      double double_drawer_box_height,
+      double double_drawer_box_depth,
+      int drawer_type,
+      Point_model drawer_origin
+      )
+  {
+    late double side_gape;
+    if(drawer_type==1){
+      side_gape=24;
+    }
+    double inner_width=box_repository.box_model.value.box_pieces[hover_id].Piece_width;
+    Drawer_model drawer_model=Drawer_model(
+        box_repository.box_model.value.box_drawers.length+1
+    , hover_id, inner_height,inner_width, drawer_type, side_gape,
+        double_drawer_box_material_thickness,
+       double_drawer_box_height,
+       double_drawer_box_depth,
+        drawer_origin);
+    box_repository.box_model.value.box_drawers.add(drawer_model);
+
+  }
+
+  add_drawer(double double_drawer_box_material_thickness,
+      double double_drawer_box_height,
+      double double_drawer_box_depth,
+      int drawer_type,
+      int drawers_quantity
+      ){
+
+    Point_model inner_origin=box_repository.box_model.value.box_pieces[hover_id].piece_origin;
+
+    if(drawers_quantity==1){
+
+      add_drawer_pattern(box_repository.box_model.value.box_pieces[hover_id].Piece_height,
+          double_drawer_box_material_thickness,
+         double_drawer_box_height,
+         double_drawer_box_depth,
+         drawer_type,
+          inner_origin);
+
+    }else{
+      double inner_height=box_repository.box_model.value.box_pieces[hover_id].Piece_height;
+      double single_inner_height=inner_height/drawers_quantity;
+
+      for(int i=0;i<drawers_quantity;i++){
+
+        Point_model inner_origin_i=Point_model(
+            inner_origin.x_coordinate,
+            inner_origin.y_coordinate
+                + single_inner_height*i
+          ,
+            inner_origin.z_coordinate,
+        );
+
+        add_drawer_pattern(inner_height,
+            double_drawer_box_material_thickness,
+            double_drawer_box_height,
+            double_drawer_box_depth,
+            drawer_type,
+            inner_origin_i
+        );
+
+
+      }
+    }
+  }
 
 
   print_pieces_coordinate() {
