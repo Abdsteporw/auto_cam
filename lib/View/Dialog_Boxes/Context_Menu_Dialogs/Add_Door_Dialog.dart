@@ -14,6 +14,7 @@ class Add_Door_Dialog extends StatefulWidget {
 }
 
 class _Add_Door_DialogState extends State<Add_Door_Dialog> {
+
   TextEditingController material_controller = TextEditingController();
 
   TextEditingController round_gap_controller = TextEditingController();
@@ -63,6 +64,7 @@ class _Add_Door_DialogState extends State<Add_Door_Dialog> {
           SizedBox(
             height: 12,
           ),
+
           Container(
             width: 300,
             height: 500,
@@ -281,6 +283,7 @@ class _Add_Door_DialogState extends State<Add_Door_Dialog> {
               ],
             ),
           ),
+
           //divider
           Padding(
             padding: const EdgeInsets.all(8.0),
@@ -289,6 +292,7 @@ class _Add_Door_DialogState extends State<Add_Door_Dialog> {
               color: Colors.grey,
             ),
           ),
+
           Container(
             width: 200,
             height: 500,
@@ -426,7 +430,7 @@ class _Add_Door_DialogState extends State<Add_Door_Dialog> {
                     InkWell(
                       onTap: () {
 
-                       Door_Model door_model=Door_Model(single_door,
+                       Door_Model door_model=Door_Model(single_door?1:2,
                            double.parse(material_controller.text.toString()),
                            double.parse(round_gap_controller.text.toString()),draw_controller.hover_id,
                            up_over_lap, right_over_lap, down_over_lap, left_over_lap);

@@ -1,6 +1,6 @@
 class Door_Model{
 
-  late bool single_door;
+  late int door_num;
   late double material_thickness;
   late double round_gap;
   late int inner_id;
@@ -11,7 +11,7 @@ class Door_Model{
   late double left_over_lap;
 
   Door_Model(
-      this.single_door,
+      this.door_num,
       this.material_thickness,
       this.round_gap,
       this.inner_id,

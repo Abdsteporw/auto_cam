@@ -9,7 +9,6 @@ import 'package:get/get.dart';
 class Drawer_model{
 
   late int drawer_id;
-  late int inner_id;
   late double inner_height;
   late double inner_width;
   late int drawer_type;
@@ -22,7 +21,6 @@ class Drawer_model{
 
   Drawer_model(
       this.drawer_id,
-      this.inner_id,
       this.inner_height,
       this.inner_width,
       this.drawer_type,
